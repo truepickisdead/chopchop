@@ -5,13 +5,13 @@ end
 function chopchop:Start()
 	chopchop:ConMsg("Gamemode initialized.")
 
+	translate = {}
+	chopchop:LoadLanguage( chopchop.settings.language )
 	chopchop:LoadFiles()
 	if SERVER then
 		chopchop:CheckDirectories()
 	end
 
-	translate = {}
-	chopchop:LoadLanguage( chopchop.settings.language )
 end
 
 function chopchop:LoadFiles()

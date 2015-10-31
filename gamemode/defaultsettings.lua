@@ -2,6 +2,9 @@ chopchop.settings = {
 
 	-- global
 	language = "eng",
+
+	-- visuals
+	chatMsgDefaultColor = Color(255, 255, 100),
 	
 	-- movement settings
 	plyDuckSpeed = 0.35,
