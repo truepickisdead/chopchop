@@ -1,0 +1,9 @@
+"Gamemode"
+{
+	"base"		"base"
+	"title"		"ChopChop"
+	"maps"		"^md_|^mu_|^murder_"
+	"menusystem"	"0"
+	"workshopid" ""
+	"version"	"1"
+}
