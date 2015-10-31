@@ -1,15 +1,17 @@
 chopchop.settings = {
-
-	plyMoveSpeed = 200,
-	plySprintSpeed = 350,
-	plyCrouchedMoveSpeed = 0.5,
+	
+	-- movement settings
 	plyDuckSpeed = 0.35,
 	plyCanWalk = true,
 	onlyMurdererCanRun = true,
 
+	-- gender specific settings
 	genders = {
 
 		male = {
+			moveSpeedModifier = 1,
+			sprintSpeedModifier = 1,
+			crouchedSpeedModifier = 1,
 			models = {
 				"models/player/Group01/Male_01.mdl",
 				"models/player/Group01/Male_02.mdl",
@@ -23,6 +25,9 @@ chopchop.settings = {
 		},
 
 		female = {
+			moveSpeedModifier = 1,
+			sprintSpeedModifier = 1.1,
+			crouchedSpeedModifier = 1.2,
 			models = {
 				"models/player/Group01/Female_01.mdl",
 				"models/player/Group01/Female_02.mdl",
