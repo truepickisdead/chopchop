@@ -1,4 +1,7 @@
 chopchop.settings = {
+
+	-- global
+	language = "eng",
 	
 	-- movement settings
 	plyDuckSpeed = 0.35,

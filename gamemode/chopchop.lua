@@ -9,6 +9,9 @@ function chopchop:Start()
 	if SERVER then
 		chopchop:CheckDirectories()
 	end
+
+	translate = {}
+	chopchop:LoadLanguage( chopchop.settings.language )
 end
 
 function chopchop:LoadFiles()
@@ -62,7 +65,18 @@ function chopchop:LoadFiles()
 	flcount = flcount + #fls
 
 	-- outro
+	chopchop:ConMsg("|")
 	chopchop:ConMsg("Total " .. flcount .. " files found")
+end
+
+function chopchop:LoadLanguage( name )
+		fls, flds = file.Find( GM.FolderName .. "/gamemode/lang/*.lua", "LUA" )
+		for k, fl in ipairs( fls ) do
+			if SERVER then AddCSLuaFile( "lang/" .. fl ) end
+		end
+		include( "lang/" .. name .. ".lua" )
+		chopchop:ConMsg( "Language set to '" .. name .. "'." )
+		chopchop:ConMsg( translate.welcome )
 end
 
 function chopchop:CheckDirectories()
