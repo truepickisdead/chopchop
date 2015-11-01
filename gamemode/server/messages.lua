@@ -11,7 +11,7 @@ end)
 hook.Add("player_disconnect", "ShowDisconnect", function( data )
 	chopchop.chat:Send(
 		player.GetAll(),
-		chopchop.settings.colors.chatMsgDefault, translate.msg.plyDisonnect:insert( data["name"] )
+		chopchop.settings.colors.chatMsgDefault, translate.msg.plyDisconnect:insert( data["name"] )
 	)
 end)
 
