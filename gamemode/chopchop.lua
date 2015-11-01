@@ -10,6 +10,7 @@ function chopchop:Start()
 	chopchop:LoadFiles()
 	if SERVER then
 		chopchop:CheckDirectories()
+		chopchop:LoadAdminPlugins()
 	end
 
 end
@@ -17,11 +18,10 @@ end
 function chopchop:LoadFiles()
 	-- greetings
 	chopchop:ConMsg("")
-	chopchop:ConMsg("Started loading files...")
+	chopchop:ConMsg("Started loading files:")
 
 	local base_folder = GM.FolderName.."/gamemode/"
 	local fls, flds
-	local flcount = 0
 
 	-- load server files
 	if SERVER then
@@ -33,7 +33,6 @@ function chopchop:LoadFiles()
 			include( "server/" .. fl )
 			chopchop:ConMsg("| " .. fl)
 		end
-		flcount = flcount + #fls
 	end
 
 	-- load client files
@@ -50,7 +49,6 @@ function chopchop:LoadFiles()
 			chopchop:ConMsg( "| " .. fl )
 		end
 	end
-	flcount = flcount + #fls
 
 	-- load shared files
 	chopchop:ConMsg("|")
@@ -62,11 +60,10 @@ function chopchop:LoadFiles()
 		include( "shared/" .. fl )
 		chopchop:ConMsg("| " .. fl)
 	end
-	flcount = flcount + #fls
 
 	-- outro
 	chopchop:ConMsg("|")
-	chopchop:ConMsg("Total " .. flcount .. " files found")
+	chopchop:ConMsg("Done loading files")
 end
 
 function chopchop:LoadLanguage( name )

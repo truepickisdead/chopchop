@@ -4,7 +4,11 @@ chopchop.settings = {
 	language = "eng",
 
 	-- visuals
-	chatMsgDefaultColor = Color(255, 255, 100),
+	colors = {
+		chatMsgDefault = Color( 255, 255, 100 ),
+		chatMsgInfo = Color( 100, 150, 255 ),
+		chatMsgError = Color( 255, 50, 50 ),
+	},
 	
 	-- movement settings
 	plyDuckSpeed = 0.35,

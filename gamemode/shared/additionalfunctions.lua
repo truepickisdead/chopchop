@@ -12,3 +12,32 @@ function file.CheckFolder(name, location)
 
 	return true
 end
+
+if SERVER then
+	util.AddNetworkString("ClientInclude")
+
+	function chopchop:sendAndInclude( name )
+		AddCSLuaFile( name )
+		net.Start( "ClientInclude" )
+			net.WriteString( name )
+		net.Broadcast()
+	end
+end
+
+if CLIENT then
+	net.Receive("ClientInclude", function (length)
+		local name = net.ReadTable()
+		include( name )
+	end)
+end
+
+function string:insert( ... )
+	local args = { ... }
+	local temp = self
+
+	for k,v in pairs(args) do
+		temp = string.gsub( temp, "{" .. k .. "}", v )
+	end
+
+	return temp
+end
