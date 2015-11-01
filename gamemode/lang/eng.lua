@@ -1,10 +1,30 @@
 translate.welcome = "Language successefully loaded."
 
--- messages
-translate.msgPlyConnect = "{1} gonna join us!"
-translate.msgPlyDisconnect = "{1} left"
+-- core
+translate.core = {
+	loadFilesStart = "Started loading files",
+	loadFilesServer = "Included server files",
+	loadFilesClient = "Included client files",
+	loadFilesShared = "Included shared files",
+	loadFilesFinish = "Done loading files",
 
--- plugins
-	-- GameName
-	translate.pluginGameName_specifyName = "Please specify the name after command"
-	translate.pluginGameName_nameChanged = "Your name was changed to '{1}'"
+	checkingData = "Checking data",
+	checkingDataFirstTime = "ChopChop was launched first time. Creating data folders",
+	checkingDataOK = "Folders are OK",
+
+	adminLoadPlugins = "Loaded admin plugins",
+	adminLoadLangFailed = "ERROR: Couldn't find translation for current language in plugin '{1}', using 'en' instead"
+}
+
+-- messages
+translate.msg = {
+	plyConnect = "{1} gonna join us!",
+	plyDisconnect = "{1} left"
+}
+
+-- administration
+translate.admin = {
+	wrongCommand = "Command '{1}' does not exist!",
+
+	commandRun = "{1} ran command '{2}' with arguments {{3}}"
+}

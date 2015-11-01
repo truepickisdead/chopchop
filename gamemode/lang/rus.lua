@@ -1,10 +1,30 @@
 translate.welcome = "Язык успешно загружен."
 
--- messages
-translate.msgPlyConnect = "К нам скоро зайдет {1}!"
-translate.msgPlyDisconnect = "{1} ушел"
+-- core
+translate.core = {
+	loadFilesStart = "Начинаем загрузку файлов",
+	loadFilesServer = "Загруженные файлы сервера",
+	loadFilesClient = "Загруженные файлы клиента",
+	loadFilesShared = "Загруженные общие файлы",
+	loadFilesFinish = "Загрузка файлов завершена",
 
--- plugins
-	-- GameName
-	translate.pluginGameName_specifyName = "Пожалуйста, укажите имя после команды"
-	translate.pluginGameName_nameChanged = "Ваше имя изменено на '{1}'"
+	checkingData = "Проверяем данные",
+	checkingDataFirstTime = "ChopChop был запущен в первый раз. Создаем директории",
+	checkingDataOK = "Директории в порядке",
+
+	adminLoadPlugins = "Загруженные административные плагины",
+	adminLoadLangFailed = "ОШИБКА: Невозможно найти перевод на выбранный язык в плагине '{1}', используем 'en'"
+}
+
+-- messages
+translate.msg = {
+	plyConnect = "К нам скоро зайдет {1}!",
+	plyDisconnect = "{1} ушел"
+}
+
+-- administration
+translate.admin = {
+	wrongCommand = "Команда '{1}' не существует!",
+
+	commandRun = "{1} выполнил команду '{2} с аргументами {{3}}"
+}

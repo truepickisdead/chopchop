@@ -2,7 +2,8 @@ chopchop.admin = {}
 
 function chopchop:LoadAdminPlugins()
 	chopchop.admin.plugins = {}
-	local msg = "Loaded admin plugins: "
+	translate.plugins = {}
+	local msg = translate.core.adminLoadPlugins .. ": "
 	
 	local fls, flds = file.Find( GM.FolderName .. "/gamemode/server/administration/*.lua", "LUA" )
 	for k, fl in ipairs( fls ) do
@@ -13,8 +14,24 @@ function chopchop:LoadAdminPlugins()
 		if prefix == "sh" or prefix == "cl" then
 			chopchop:sendAndInclude( "server/administration/" .. fl )
 		end
-		include( "server/administration/" .. fl )
-		chopchop.admin.plugins[ CC_PLUGIN.Name ] = CC_PLUGIN
+
+			-- add plugin to temp var
+			include( "server/administration/" .. fl )
+			-- add plugin to collection
+			chopchop.admin.plugins[ CC_PLUGIN.Name ] = CC_PLUGIN
+			-- add plugin's translatables
+			if CC_PLUGIN.Translate then
+				local lang = "eng"
+				local langFound = false
+				for k,v in pairs(CC_PLUGIN.Translate) do
+					if k == chopchop.settings.language then
+						lang = k
+						langFound = true
+					end
+				end
+				if !langFound then chopchop:ConMsg( translate.core.adminLoadLangFailed:insert( CC_PLUGIN.Name ) ) end
+				translate.plugins[ CC_PLUGIN.Name ] = CC_PLUGIN.Translate[ lang ]
+			end
 
 		msg = msg .. CC_PLUGIN.Name .. " (" .. fl .. ")" .. (k != #fls and ", " or "")
 	end
@@ -39,14 +56,14 @@ function chopchop.admin.checkCmd( sender, text )
 
 	if pluginExists then
 		chopchop:ConMsg(
-			sender:Nick() .. " ran command " .. cmd .. " with arguments " .. "{" .. string.Implode( ", ", args ) .. "}"
+			translate.admin.commandRun:insert( sender:Nick(), cmd, string.Implode( ", ", args ) )
 		)
 
 		chopchop.admin.plugins[ pluginName ].Execute( cmd, sender, args )
 	else
 		chopchop.chat:Send(
 			sender,
-			chopchop.settings.colors.chatMsgError, 'This command does not exist!'
+			chopchop.settings.colors.chatMsgError, translate.admin.wrongCommand:insert(cmd)
 		)
 		return false
 	end

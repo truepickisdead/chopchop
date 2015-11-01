@@ -31,6 +31,8 @@ if CLIENT then
 	end)
 end
 
+-- returns a string 's' from translate module where substrings
+-- '{m...n}' are replaced with '(m+1)th ... (n+1)th' arguments
 function string:insert( ... )
 	local args = { ... }
 	local temp = self
