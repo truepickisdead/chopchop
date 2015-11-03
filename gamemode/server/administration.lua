@@ -5,6 +5,7 @@ function chopchop:LoadAdminPlugins()
 	translate.plugins = {}
 	local msg = translate.core.adminLoadPlugins .. ": "
 	
+	-- search for plugins
 	local fls, flds = file.Find( GM.FolderName .. "/gamemode/server/administration/*.lua", "LUA" )
 	for k, fl in ipairs( fls ) do
 		local prefix = string.Left( fl, string.find( fl, "_" ) - 1 )
@@ -19,17 +20,27 @@ function chopchop:LoadAdminPlugins()
 			include( "server/administration/" .. fl )
 			-- add plugin to collection
 			chopchop.admin.plugins[ CC_PLUGIN.Name ] = CC_PLUGIN
-			-- add plugin's translatables
+			-- add plugin's translatables if any
 			if CC_PLUGIN.Translate then
-				local lang = "eng"
+				local lang
+				local lang1 = nil
 				local langFound = false
+
 				for k,v in pairs(CC_PLUGIN.Translate) do
 					if k == chopchop.settings.language then
+						-- get the first language in list
+						if lang1 == nil then lang1 = k end
 						lang = k
 						langFound = true
 					end
 				end
-				if !langFound then chopchop:ConMsg( translate.core.adminLoadLangFailed:insert( CC_PLUGIN.Name ) ) end
+
+				-- failsafe: select first available language if no translation for selected language
+				if !langFound then
+					lang = lang1
+					chopchop:ConMsg( translate.core.adminLoadLangFailed:insert( CC_PLUGIN.Name, lang ) )
+				end
+
 				translate.plugins[ CC_PLUGIN.Name ] = CC_PLUGIN.Translate[ lang ]
 			end
 
@@ -40,9 +51,12 @@ end
 
 function chopchop.admin.checkCmd( sender, text )
 	local args = string.Explode(" ", text)
+	-- get the command out of message
 	local cmd = string.sub(args[1], 2)
+	-- remove command from args, keeping args 'clean'
 	table.remove(args, 1)
 
+	-- check if we have plugin for this command
 	local pluginExists = false
 	local pluginName
 	for k,v in pairs(chopchop.admin.plugins) do
@@ -54,6 +68,7 @@ function chopchop.admin.checkCmd( sender, text )
 		end
 	end
 
+	-- execute if there's
 	if pluginExists then
 		chopchop:ConMsg(
 			translate.admin.commandRun:insert( sender:Nick(), cmd, string.Implode( ", ", args ) )

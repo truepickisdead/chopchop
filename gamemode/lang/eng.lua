@@ -13,7 +13,7 @@ translate.core = {
 	checkingDataOK = "Folders are OK",
 
 	adminLoadPlugins = "Loaded admin plugins",
-	adminLoadLangFailed = "ERROR: Couldn't find translation for current language in plugin '{1}', using 'en' instead"
+	adminLoadLangFailed = "ERROR: Couldn't find translation for current language in plugin '{1}', using '{2}' instead"
 }
 
 -- messages

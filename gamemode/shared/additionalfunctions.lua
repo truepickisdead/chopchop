@@ -4,6 +4,7 @@ function table.removekey(table, key)
     return element
 end
 
+-- check if folder exists
 function file.CheckFolder(name, location)
 	if !file.Exists(name, location) then
 		file.CreateDir(name)
@@ -13,6 +14,7 @@ function file.CheckFolder(name, location)
 	return true
 end
 
+-- send and include on client shortcut for serverside scripts
 if SERVER then
 	util.AddNetworkString("ClientInclude")
 
@@ -32,7 +34,7 @@ if CLIENT then
 end
 
 -- returns a string 's' from translate module where substrings
--- '{m...n}' are replaced with '(m+1)th ... (n+1)th' arguments
+-- '{m}...{n}' are replaced with '(m+1)th ... (n+1)th' arguments
 function string:insert( ... )
 	local args = { ... }
 	local temp = self

@@ -76,6 +76,7 @@ end
 function chopchop:LoadLanguage( name )
 	local languages = {}
 
+	-- get languages list and send it to clients
 	fls, flds = file.Find( GM.FolderName .. "/gamemode/lang/*.lua", "LUA" )
 	for k, fl in ipairs( fls ) do
 		if SERVER then AddCSLuaFile( "lang/" .. fl ) end
