@@ -34,6 +34,14 @@ function GM:PlayerSetHandsModel( ply, ent )
 	end
 end
 
+function GM:PlayerInitialSpawn( ply )
+	-- do not spawn player on join
+	timer.Simple(0, function () if IsValid(ply) then ply:KillSilent() end end)
+	
+	-- move to spectators on join
+	ply:SetTeam( chopchop.settings.debug and 1 or 2 )
+end
+
 -- =======================
 -- DISABLED BASE FUNCTIONS
 -- =======================

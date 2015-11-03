@@ -85,3 +85,29 @@ function chopchop.admin.checkCmd( sender, text )
 
 	return true
 end
+
+function chopchop.admin.findPlys( name )
+	local plys = {}
+	for k,v in pairs( player.GetAll() ) do
+		if ( v:Nick():lower() ):find( name:lower() ) ~= nil then
+			table.insert( plys, v )
+		end
+	end
+
+	return plys
+end
+
+function chopchop.admin.plysToString( plys )
+	local out = ""
+	for k, ply in pairs(plys) do
+		out = out .. ply:Nick()
+
+		if #plys > 1 && k == #plys - 1 then
+			out = out .. " " .. translate.admin.separatorAnd .. " "
+		elseif #plys > 2 then
+			out = out .. ", "
+		end
+	end
+
+	return out
+end

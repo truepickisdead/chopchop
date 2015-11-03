@@ -1,7 +1,14 @@
 chopchop.settings = {
 
 	-- global
+	debug = true,
 	language = "eng",
+
+	-- rounds
+	rounds = {
+		restartTime = 5,
+		limit = 10
+	},
 
 	-- visuals
 	colors = {

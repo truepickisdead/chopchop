@@ -24,7 +24,10 @@ translate.msg = {
 
 -- administration
 translate.admin = {
+	separatorAnd = "and",
+
 	wrongCommand = "Command '{1}' does not exist!",
 
-	commandRun = "{1} ran command '{2}' with arguments {{3}}"
+	commandRun = "{1} ran command '{2}' with arguments {{3}}",
+	noTarget = "Cannot find players using this pattern"
 }

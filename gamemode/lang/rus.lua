@@ -24,7 +24,10 @@ translate.msg = {
 
 -- administration
 translate.admin = {
+	separatorAnd = "и",
+
 	wrongCommand = "Команда '{1}' не существует!",
 
-	commandRun = "{1} выполнил команду '{2} с аргументами {{3}}"
+	commandRun = "{1} выполнил команду '{2} с аргументами {{3}}",
+	noTarget = "Не могу найти игроков с указанным именем"
 }
