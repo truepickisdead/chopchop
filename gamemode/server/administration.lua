@@ -104,7 +104,7 @@ function chopchop.admin.plysToString( plys )
 
 		if #plys > 1 && k == #plys - 1 then
 			out = out .. " " .. translate.admin.separatorAnd .. " "
-		elseif #plys > 2 then
+		elseif #plys > 2 && k ~= #plys then
 			out = out .. ", "
 		end
 	end
