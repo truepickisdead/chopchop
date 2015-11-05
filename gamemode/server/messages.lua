@@ -42,10 +42,19 @@ function GM:PlayerSay( sender, text, teamChat )
 		chopchop.admin.cmd( sender, text:sub(2) )
 	-- if not, just send message from his GameName
 	else
+		local name = sender.GameName or "Mr. Error"
+
+		-- alive players cannot see ghosts chat
+		local receivers = {}
+		for k, ply in pairs( player.GetAll() ) do
+			if self:PlayerCanHear( ply, sender ) then table.insert( receivers, ply ) end
+		end
+
+		print( ( sender:GetNWBool( "Died", false ) and "*ghost* " or "") .. sender:Nick() .. " (" .. name .. "): " .. text )
 		chopchop.chat:Send(
-			player.GetAll(),
-			Color(255, 255, 100), sender.GameName or "Mr. Error" .. ": ",
-			Color(255, 255, 255), text
+			receivers,
+			Color(255, 255, 100), name,
+			Color(255, 255, 255), ": " .. text
 		)
 	end
 

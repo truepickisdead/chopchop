@@ -72,7 +72,7 @@ function chopchop.admin.cmd( sender, text )
 	end
 
 	-- execute if there's a plugin with this name
-	if pluginExists then
+	if pluginExists || cmd == "help" then
 		-- get info on requested plugin if help passed
 		if cmd == "help" then
 			if args[1] ~= nil then
@@ -89,13 +89,25 @@ function chopchop.admin.cmd( sender, text )
 						chopchop.settings.colors.chatMsgInfo, translate.admin.noPluginInfo:insert(cmd)
 					)
 				end
+
+				if pluginExists  then
+					chopchop.chat:Send(
+						sender,
+						chopchop.settings.colors.chatMsgInfo, chopchop.admin.getPluginInfo( pluginName )
+					)
+				else
+					chopchop.chat:Send(
+						sender,
+						chopchop.settings.colors.chatMsgError, translate.admin.wrongCommand:insert( args[1] )
+					)
+				end
 			else
 				local msg = translate.admin.help .. "\n\n"
 
 				for name,plugin in pairs( chopchop.admin.plugins ) do
 					msg = msg ..
 						"    " .. name .. " (" .. string.Implode( ", ", plugin.Commands ) .. ")" ..
-						" - " .. translate.plugins[ name ].description or translate.admin.noPluginDescription .. "\n"
+						" - " ..--[[ translate.plugins[ name ].description or]] translate.admin.noPluginDescription .. "\n"
 				end
 
 				chopchop.chat:Send(
@@ -115,10 +127,7 @@ function chopchop.admin.cmd( sender, text )
 			sender,
 			chopchop.settings.colors.chatMsgError, translate.admin.wrongCommand:insert( cmd == "help" and args[1] or cmd )
 		)
-		return false
 	end
-
-	return true
 end
 
 function chopchop.admin.getPluginInfo( name )

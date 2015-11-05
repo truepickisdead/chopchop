@@ -29,7 +29,6 @@ function GM:PlayerSpawn( ply )
 		-- undo ghost look
 		ply:SetColor( Color( 255, 255, 255, 255 ) )
 		ply:SetRenderMode( RENDERMODE_NORMAL )
-		ply:SetRenderFX( 0 )
 		ply:SetCustomCollisionCheck( false )
 		ply:DrawShadow( true )
 		ply:SetMaterial( "" )
@@ -45,12 +44,11 @@ function GM:PlayerSpawn( ply )
 		ply:SetEyeAngles( ply:GetNWVector( "DeathEyeAngle", Vector( 0, 0, 0) ) )
 
 		-- make players look like ghosts
-		ply:SetColor( Color( 255, 255, 255, 30 ) )
+		ply:SetColor( chopchop.settings.colors.ghosts )
 		ply:SetRenderMode( RENDERMODE_TRANSALPHA )
-		ply:SetRenderFX( 1 )
 		ply:SetCustomCollisionCheck( true )
 		ply:DrawShadow( false )
-		ply:SetMaterial( "models/props_lab/warp_sheet" )
+		ply:SetMaterial( chopchop.settings.colors.ghostsMaterial )
 	end
 end
 
@@ -84,13 +82,13 @@ function GM:CanPlayerSuicide( ply )
 	return true
 end
 
-function GM:PlayerFootstep( ply, pos, foot, sound, volume, filter )
-	if ply:GetNWBool( "Died", true ) then return true end
-end
-
-hook.Add("PlayerDeathThink", "PlyDeathHook", function( ply )
+hook.Add( "PlayerDeathThink", "PlyDeathHook", function( ply )
 	ply:SetNWBool( "Died", true )
 	ply:SetNWVector( "DeathEyeAngle", ply:EyeAngles() )
+end)
+
+hook.Add( "PlayerUse", "GhostsCannotUse", function( ply, ent )
+	if ply:GetNWBool( "Died", false ) then return false end
 end)
 
 -- =======================
