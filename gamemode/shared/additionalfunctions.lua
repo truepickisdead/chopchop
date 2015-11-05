@@ -4,6 +4,14 @@ function table.removekey(table, key)
     return element
 end
 
+function table.contains(table, val)
+	for k,v in pairs(table) do
+		if v == val then return k end
+	end
+
+	return nil
+end
+
 -- check if folder exists
 function file.CheckFolder(name, location)
 	if !file.Exists(name, location) then
@@ -20,15 +28,17 @@ if SERVER then
 
 	function chopchop:sendAndInclude( name )
 		AddCSLuaFile( name )
-		net.Start( "ClientInclude" )
-			net.WriteString( name )
-		net.Broadcast()
+		timer.Simple( 0, function ()
+			net.Start( "ClientInclude" )
+				net.WriteString( name )
+			net.Broadcast()
+		end)
 	end
 end
 
 if CLIENT then
 	net.Receive("ClientInclude", function (length)
-		local name = net.ReadTable()
+		local name = net.ReadString()
 		include( name )
 	end)
 end
@@ -44,4 +54,8 @@ function string:insert( ... )
 	end
 
 	return temp
+end
+
+function math.inRange( val, min, max )
+	return val > min && val < max 
 end

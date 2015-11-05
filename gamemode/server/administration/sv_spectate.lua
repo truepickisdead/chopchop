@@ -1,4 +1,4 @@
-CC_PLUGIN.Name = "Spectate"
+CC_PLUGIN.Name = "Move to spectators"
 CC_PLUGIN.Commands = {"spectate"}
 
 CC_PLUGIN.Translate = {
@@ -13,12 +13,26 @@ CC_PLUGIN.Translate = {
 }
 
 function CC_PLUGIN.Execute( cmd, sender, args )
-	local tr = translate.plugins[ "Spectate" ]
+	local tr = translate.plugins[ "Move to spectators" ]
 
-	-- toggle team between spectators and players
-	sender:SetTeam( sender:Team() == 1 and 2 or 1 )
-	chopchop.chat:Send(
-		player.GetAll(),
-		chopchop.settings.colors.chatMsgInfo, ( sender:Team() == 1 and tr.toSpectators or tr.toPlayers ):insert( sender:Nick() )
-	)
+	local function doIt( ply )
+		-- prevent being "alive spectator"
+		if ply:Alive() then ply:KillSilent() end
+
+		-- toggle team between spectators and players
+		ply:SetTeam( ply:Team() == 1 and 2 or 1 )
+		chopchop.chat:Send(
+			player.GetAll(),
+			chopchop.settings.colors.chatMsgInfo, ( ply:Team() == 1 and tr.toSpectators or tr.toPlayers ):insert( ply:Nick() )
+		)
+	end
+
+	if args ~= nil && #args > 0 then
+		for k,v in pairs( chopchop.admin.findPlys( string.Implode( " ", args ) ) ) do
+			doIt( v )
+		end
+	else
+		doIt( sender )
+	end
+
 end

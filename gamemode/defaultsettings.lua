@@ -3,6 +3,8 @@ chopchop.settings = {
 	-- global
 	debug = true,
 	language = "eng",
+	maxCorpsesPerPlayer = 2,
+	maxCorpsesPerServer = 20,
 
 	-- rounds
 	rounds = {

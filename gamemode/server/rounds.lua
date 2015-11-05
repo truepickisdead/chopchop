@@ -1,6 +1,7 @@
 -- initial values set at map start
 GM.Stage = "WaitingForPlayers"
 GM.Round = {
+	Mode = "",
 	Count = 0,
 	StartTime = nil,
 	EndTime = nil
@@ -8,13 +9,13 @@ GM.Round = {
 
 -- executed every tick
 function GM:RoundThink()
-	local players = team.GetPlayers(1)
+	local players = team.NumPlayers(1)
 
-	if #players < 2 then
+	if players < 2 then
 		self.Stage = "WaitingForPlayers"
 	end
 	
-	if self.Stage == "WaitingForPlayers" && #players > 1 then
+	if self.Stage == "WaitingForPlayers" && players > 1 then
 		self:StartRound( "default" )
 	elseif self.Stage == "Playing" then
 		self:CheckForWin()
@@ -27,10 +28,12 @@ end
 
 function GM:StartRound( mode )
 	self.Round.Count = self.Round.Count + 1
+	self.Round.Mode = mode
 	self.Stage = "Playing"
 
 	for k,v in pairs( team.GetPlayers(1) ) do
 		if v:Alive() then v:KillSilent() end
+		v:SetNWBool( "Died", false )
 		v:Spawn()
 	end
 	game.CleanUpMap()
@@ -45,7 +48,7 @@ function GM:CheckForWin()
 	plysAlive = {}
 
 	for k,ply in pairs( team.GetPlayers(1) ) do
-		if ply:Alive() then table.insert( plysAlive, ply ) end
+		if ply:Alive() && !ply:GetNWBool( "Died", false ) then table.insert( plysAlive, ply ) end
 	end
 
 	if ( #plysAlive < 2 ) then
@@ -59,17 +62,16 @@ function GM:EndRound( reason )
 
 	if chopchop.settings.debug then chopchop.chat:Send(
 		player.GetAll(),
-		chopchop.settings.colors.chatMsgInfo, "Round ended, restarting soon..."
+		chopchop.settings.colors.chatMsgInfo, "[DEBUG] Round ended, restarting soon..."
 	) end
 end
 
 function GM:PlayerDeathThink( ply )
-	if self.Stage ~= "WaitingForPlayers" then return false end
-
+	-- true to respawn, false to prevent
 	ply:Spawn()
-	if chopchop.settings.debug then chopchop.chat:Send(
+	if chopchop.settings.debug && self.RoundStage == "WaitingForPlayers" then chopchop.chat:Send(
 		player.GetAll(),
-		chopchop.settings.colors.chatMsgInfo, "Not enough players, wait until someone else joins"
+		chopchop.settings.colors.chatMsgInfo, "[DEBUG] Not enough players, wait until someone else joins"
 	) end
 	return true
 end

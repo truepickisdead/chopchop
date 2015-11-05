@@ -17,9 +17,10 @@ function chopchop:Start()
 	chopchop:LoadFiles()
 	if SERVER then
 		chopchop:CheckDirectories()
-		chopchop:LoadAdminPlugins()
 	end
-
+	
+	-- there's two separate functions of this in both 'client/... and 'server/administration.lua'
+	chopchop:LoadAdminPlugins()
 end
 
 function chopchop:LoadFiles()

@@ -12,9 +12,10 @@ function chopchop:LoadAdminPlugins()
 		CC_PLUGIN = {}
 
 		-- if file is shared or client-side, send and include on clients
-		if prefix == "sh" or prefix == "cl" then
-			chopchop:sendAndInclude( "server/administration/" .. fl )
-		end
+		-- TODO: not working for this moment
+		-- if prefix == "sh" or prefix == "cl" then
+		-- 	chopchop:sendAndInclude( "server/administration/" .. fl )
+		-- end
 
 			-- add plugin to temp var
 			include( "server/administration/" .. fl )
@@ -49,10 +50,10 @@ function chopchop:LoadAdminPlugins()
 	chopchop:ConMsg( msg )
 end
 
-function chopchop.admin.checkCmd( sender, text )
+function chopchop.admin.cmd( sender, text )
 	local args = string.Explode(" ", text)
 	-- get the command out of message
-	local cmd = string.sub(args[1], 2)
+	local cmd = args[1]
 	-- remove command from args, keeping args 'clean'
 	table.remove(args, 1)
 
@@ -61,29 +62,73 @@ function chopchop.admin.checkCmd( sender, text )
 	local pluginName
 	for k,v in pairs(chopchop.admin.plugins) do
 		for k2,v2 in pairs( v.Commands ) do
-			if v2 == cmd then
+			-- get help for plugin if there's
+			if v2 == (cmd == "help" and ((args[1] ~= nil) and args[1] or "whatever") or cmd) then
 				pluginExists = true
 				pluginName = v.Name
+				break
 			end
 		end
 	end
 
-	-- execute if there's
+	-- execute if there's a plugin with this name
 	if pluginExists then
-		chopchop:ConMsg(
-			translate.admin.commandRun:insert( sender:Nick(), cmd, string.Implode( ", ", args ) )
-		)
+		-- get info on requested plugin if help passed
+		if cmd == "help" then
+			if args[1] ~= nil then
+				-- TODO: NIL VALUES PANIC! I DON F***ING HOW TO GET RID OF THEM
+				-- ITS 8AM HERE AND THERE'RE STILL THESE ERRORS DAMN I'LL DO IT TOMORROW
+				if translate.plugins[ pluginName ].usage ~= nil || translate.plugins[ pluginName ].description ~= nil then
+					chopchop.chat:Send(
+						sender,
+						chopchop.settings.colors.chatMsgInfo, chopchop.admin.getPluginInfo( pluginName )
+					)
+				else
+					chopchop.chat:Send(
+						sender,
+						chopchop.settings.colors.chatMsgInfo, translate.admin.noPluginInfo:insert(cmd)
+					)
+				end
+			else
+				local msg = translate.admin.help .. "\n\n"
 
-		chopchop.admin.plugins[ pluginName ].Execute( cmd, sender, args )
+				for name,plugin in pairs( chopchop.admin.plugins ) do
+					msg = msg ..
+						"    " .. name .. " (" .. string.Implode( ", ", plugin.Commands ) .. ")" ..
+						" - " .. translate.plugins[ name ].description or translate.admin.noPluginDescription .. "\n"
+				end
+
+				chopchop.chat:Send(
+					sender,
+					chopchop.settings.colors.chatMsgInfo, msg
+				)
+			end
+		else
+			chopchop:ConMsg(
+				translate.admin.commandRun:insert( sender:Nick(), cmd, string.Implode( ", ", args ) )
+			)
+
+			chopchop.admin.plugins[ pluginName ].Execute( cmd, sender, args )
+		end
 	else
 		chopchop.chat:Send(
 			sender,
-			chopchop.settings.colors.chatMsgError, translate.admin.wrongCommand:insert(cmd)
+			chopchop.settings.colors.chatMsgError, translate.admin.wrongCommand:insert( cmd == "help" and args[1] or cmd )
 		)
 		return false
 	end
 
 	return true
+end
+
+function chopchop.admin.getPluginInfo( name )
+	local msg = "[ " .. name .. " ]" .. "\n" ..
+		(translate.plugins[ name ].usage ~= nil and
+			("    " .. translate.admin.pluginTemplate .. ":\n        " .. translate.plugins[ name ].usage .. "\n") or "") ..
+		(translate.plugins[ name ].description ~= nil and
+			("    " .. translate.admin.pluginDescription .. ":\n        " .. translate.plugins[ name ].description) or "")
+
+	return msg
 end
 
 function chopchop.admin.findPlys( name )
@@ -111,3 +156,30 @@ function chopchop.admin.plysToString( plys )
 
 	return out
 end
+
+util.AddNetworkString( "AdminPlugins" )
+util.AddNetworkString( "GetAdminPlugins" )
+util.AddNetworkString( "RunAdminCommand" )
+net.Receive( "GetAdminPlugins", function( len, ply )
+	-- repack the table without functions as we can't send them
+	local repack = {}
+	for k,plugin in pairs( chopchop.admin.plugins ) do
+		local entry = {
+			Name = plugin.Name,
+			Commands = plugin.Commands,
+			Translate = plugin.Translate,
+			Usage = plugin.Usage,
+			Permissions = plugin.Permissions
+		}
+
+		repack[ entry.Name ] = entry
+	end
+
+	net.Start( "AdminPlugins" )
+		net.WriteTable( repack )
+	net.Send( ply )
+end)
+
+net.Receive( "RunAdminCommand", function( len, ply )
+	chopchop.admin.cmd( ply, net.ReadString() )
+end)
