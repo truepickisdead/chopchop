@@ -24,7 +24,7 @@ function GM:PlayerSpawn( ply )
 
 		-- some movement properties
 			-- gender specific
-			ply:SetRunSpeed( 300 * genderSettings.sprintSpeedModifier )
+			ply:SetRunSpeed( 225 * genderSettings.sprintSpeedModifier )
 			ply:SetWalkSpeed( 200 * genderSettings.moveSpeedModifier )
 			ply:SetCrouchedWalkSpeed( 0.5 * genderSettings.crouchedSpeedModifier )
 			-- global
@@ -32,34 +32,51 @@ function GM:PlayerSpawn( ply )
 			ply:SetDuckSpeed( chopchop.settings.plyDuckSpeed )
 			ply:SetUnDuckSpeed( chopchop.settings.plyDuckSpeed )
 
-		-- loadout player
-		self:PlayerLoadout( ply )
-
 		-- undo ghost look
 		ply:SetColor( Color( 255, 255, 255, 255 ) )
 		ply:SetRenderMode( RENDERMODE_NORMAL )
 		ply:SetCustomCollisionCheck( false )
 		ply:DrawShadow( true )
 		ply:SetMaterial( "" )
-
-		ply:Give( "weapon_357" )
 	else
 	-- player died previously, spawn as observer
 		local corpse = ply:GetRagdollEntity()
 		if corpse ~= nil then
-			ply:GodEnable()
-			ply:SetPos( corpse:GetPos() + Vector( 0, 0, -35) )
+			--ply:SetPos( corpse:GetPos() + Vector( 0, 0, -35) )
 		end
 
 		-- make player look in same direction as before death
-		ply:SetEyeAngles( ply:GetNWVector( "DeathEyeAngle", Vector( 0, 0, 0) ) )
+		--ply:SetEyeAngles( ply:GetNWVector( "DeathEyeAngle", Vector( 0, 0, 0) ) )
 
+		ply:GodEnable()
+		
 		-- make players look like ghosts
 		ply:SetColor( chopchop.settings.colors.ghosts )
 		ply:SetRenderMode( RENDERMODE_TRANSALPHA )
 		ply:SetCustomCollisionCheck( true )
 		ply:DrawShadow( false )
 		ply:SetMaterial( chopchop.settings.colors.ghostsMaterial )
+	end
+end
+
+function GM:PlayerLoadout( ply )
+	if ply then
+		for k, wep in pairs( chopchop.settings.playerDefaultWeapons ) do
+			ply:Give( wep )
+		end
+
+		if ply.IsManiac then
+			for k, wep in pairs( chopchop.settings.murdererMainWeapons ) do
+				ply:Give( wep )
+			end
+			for wep, chance in pairs( chopchop.settings.murdererBonusWeapons ) do
+				if math.random( chance*100 ) == 1 then ply:Give( wep ) end
+			end
+		else
+			for wep, chance in pairs( chopchop.settings.bystanderBonusWeapons ) do
+				if !ply:HasWeapon( wep ) && math.random( chance*100 ) == 1 then ply:Give( wep ) end
+			end
+		end
 	end
 end
 
@@ -79,6 +96,10 @@ function GM:PlayerInitialSpawn( ply )
 	
 	-- do not spawn player on join
 	timer.Simple(0, function () if IsValid(ply) then ply:KillSilent() end end)
+end
+
+function GM:PlayerDeath( victim, inflictor, attacker )
+	victim:SetNWFloat( "DeathTime", CurTime() )
 end
 
 function GM:GetFallDamage( ply, speed )
@@ -107,7 +128,7 @@ end
 
 hook.Add( "PlayerDeathThink", "PlyDeathHook", function( ply )
 	ply:SetNWBool( "Died", true )
-	ply:SetNWVector( "DeathEyeAngle", ply:EyeAngles() )
+	--ply:SetNWVector( "DeathEyeAngle", ply:EyeAngles() )
 end)
 
 hook.Add( "PlayerUse", "GhostsCannotUse", function( ply, ent )

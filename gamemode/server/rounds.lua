@@ -27,6 +27,8 @@ function GM:RoundThink()
 end
 
 function GM:StartRound( mode )
+	game.CleanUpMap()
+
 	self.Round.Count = self.Round.Count + 1
 	self.Round.Mode = mode
 	self.Stage = "Playing"
@@ -36,12 +38,13 @@ function GM:StartRound( mode )
 		v:SetNWBool( "Died", false )
 		v:Spawn()
 	end
-	game.CleanUpMap()
 
 	if chopchop.settings.debug then chopchop.chat:Send(
 		player.GetAll(),
 		chopchop.settings.colors.chatMsgInfo, "Round started"
 	) end
+
+	self:RoundStarted( mode )
 end
 
 function GM:CheckForWin()
@@ -67,11 +70,16 @@ function GM:EndRound( reason )
 end
 
 function GM:PlayerDeathThink( ply )
+	deathTime = ply:GetNWFloat( "DeathTime" )
+
 	-- true to respawn, false to prevent
-	ply:Spawn()
+	if deathTime && CurTime() > deathTime + chopchop.settings.ghostSpawnDelay || self.RoundStage == "WaitingForPlayers" then
+		ply:Spawn()
+	end
 	if chopchop.settings.debug && self.RoundStage == "WaitingForPlayers" then chopchop.chat:Send(
 		player.GetAll(),
 		chopchop.settings.colors.chatMsgInfo, "[DEBUG] Not enough players, wait until someone else joins"
 	) end
-	return true
+
+	return false
 end
