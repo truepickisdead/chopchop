@@ -1,3 +1,12 @@
+function GM:PlayerThink()
+	for k, ply in pairs( player.GetAll() ) do
+		-- make ghosts "fly" a little when they are falling fast
+		if ply:GetNWBool( "Died" ) && ply:GetVelocity().z < -200 then
+			ply:SetVelocity( Vector( 0, 0, 50) )
+		end
+	end
+end
+
 -- ================
 -- PLAYER LIFECYCLE
 -- ================
@@ -19,9 +28,9 @@ function GM:PlayerSpawn( ply )
 			ply:SetWalkSpeed( 200 * genderSettings.moveSpeedModifier )
 			ply:SetCrouchedWalkSpeed( 0.5 * genderSettings.crouchedSpeedModifier )
 			-- global
+			ply:SetCanWalk( chopchop.settings.plyCanWalk )
 			ply:SetDuckSpeed( chopchop.settings.plyDuckSpeed )
 			ply:SetUnDuckSpeed( chopchop.settings.plyDuckSpeed )
-			ply:SetCanWalk ( chopchop.settings.plyCanWalk )
 
 		-- loadout player
 		self:PlayerLoadout( ply )
@@ -32,6 +41,8 @@ function GM:PlayerSpawn( ply )
 		ply:SetCustomCollisionCheck( false )
 		ply:DrawShadow( true )
 		ply:SetMaterial( "" )
+
+		ply:Give( "weapon_357" )
 	else
 	-- player died previously, spawn as observer
 		local corpse = ply:GetRagdollEntity()
@@ -68,6 +79,18 @@ function GM:PlayerInitialSpawn( ply )
 	
 	-- do not spawn player on join
 	timer.Simple(0, function () if IsValid(ply) then ply:KillSilent() end end)
+end
+
+function GM:GetFallDamage( ply, speed )
+	return ( speed / 8 )
+end
+
+function GM:PlayerShouldTakeDamage( ply, attacker )
+	if ply:GetNWBool( "Died" ) then
+		return false
+	end
+
+	return true
 end
 
 function GM:CanPlayerSuicide( ply )
