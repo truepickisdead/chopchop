@@ -44,3 +44,21 @@ hook.Add( "HUDPaint", "DrawScreenOverlay",function()
 		DrawColorModify( deathColors )
 	end
 end)
+
+function MyCalcView( ply, origin, angles, fov )
+	local body = ply:GetRagdollEntity()
+	if !body then return end
+
+	print( "found body, setting fp view" )
+
+	local eyes = body:GetAttachment( body:LookupAttachment( "eyes" ) )
+	local view = {
+		origin = eyes.Pos,
+		angles = eyes.Ang,
+		fov = 90
+	}
+
+	return view
+end
+
+hook.Add( "CalcView", "FPDeath", MyCalcView )

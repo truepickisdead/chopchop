@@ -1,4 +1,4 @@
 function GM:Think()
-	self:RoundThink()
-	self:PlayerThink()
+	chopchop:RoundThink()
+	chopchop:PlayerThink()
 end

@@ -35,8 +35,8 @@ function CC_PLUGIN.Execute( cmd, sender, args )
 			)
 			-- TODO: cannot access GM from here
 			timer.Simple( 3, function()
-				GM.Round.Count = GM.Round.Count - 1
-				GM:StartRound( GM.Round.Mode )
+				chopchop.Round.Count = chopchop.Round.Count - 1
+				chopchop:StartRound( chopchop.Round.Mode )
 			end)
 		end
 	end

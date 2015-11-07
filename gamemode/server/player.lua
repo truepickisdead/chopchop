@@ -1,4 +1,4 @@
-function GM:PlayerThink()
+function chopchop:PlayerThink()
 	for k, ply in pairs( player.GetAll() ) do
 		-- make ghosts "fly" a little when they are falling fast
 		if ply:GetNWBool( "Died" ) && ply:GetVelocity().z < -250 then
@@ -25,7 +25,7 @@ function GM:PlayerSpawn( ply )
 		-- some movement properties
 			-- gender specific
 			ply:SetRunSpeed( 225 * genderSettings.sprintSpeedModifier )
-			ply:SetWalkSpeed( 200 * genderSettings.moveSpeedModifier )
+			ply:SetWalkSpeed( 120 * genderSettings.moveSpeedModifier )
 			ply:SetCrouchedWalkSpeed( 0.5 * genderSettings.crouchedSpeedModifier )
 			-- global
 			ply:SetCanWalk( chopchop.settings.plyCanWalk )
@@ -59,17 +59,15 @@ function GM:PlayerSpawn( ply )
 	end
 end
 
-function GM:PlayerLoadout( ply )
+function chopchop:PlayerLoadout( ply )
 	if ply then
 		for k, wep in pairs( chopchop.settings.playerDefaultWeapons ) do
 			ply:Give( wep )
 		end
 
 		if ply.IsManiac then
-			for k, wep in pairs( chopchop.settings.murdererMainWeapons ) do
-				ply:Give( wep )
-			end
-			for wep, chance in pairs( chopchop.settings.murdererBonusWeapons ) do
+			ply:Give( chopchop.settings.maniacMainWeapon )
+			for wep, chance in pairs( chopchop.settings.maniacBonusWeapons ) do
 				if math.random( chance*100 ) == 1 then ply:Give( wep ) end
 			end
 		else

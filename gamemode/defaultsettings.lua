@@ -5,13 +5,13 @@ chopchop.settings = {
 	maxCorpsesPerPlayer = 2,
 	maxCorpsesPerServer = 20,
 	ghostSpawnDelay = 5,
-	ghostFadeInDelay = 2,
+	ghostFadeInDelay = 5,
 
 	-- weapons
 	-- (bonus weapons: "weapon_name" = [appearance chance], minimal chance is 0.01)
 	playerDefaultWeapons = {},
-	murdererMainWeapons = { "weapon_crowbar" },
-	murdererBonusWeapons = {},
+	maniacMainWeapon = "weapon_crowbar",
+	maniacBonusWeapons = {},
 	bystanderGun = "weapon_357",
 	bystanderBonusWeapons = { ["weapon_357"] = 0.1 },
 	

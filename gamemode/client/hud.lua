@@ -6,7 +6,9 @@ local hideName = {
 	CHudAmmo = true,
 	CHudBattery = true,
 	CHudCrosshair = true,
-	CHudHealth = true
+	CHudHealth = true,
+	CHudDamageIndicator = true,
+	CHudWeaponSelection = true
 }
 function GM:HUDShouldDraw( name )
 	if hideName[ name ] then

@@ -17,9 +17,10 @@ function GM:ShouldCollide( ent1, ent2 )
 		func_lookdoor = true,
 		func_door_rotating = true,
 		prop_door_rotating = true,
-		func_movelinear = true,
+		--func_movelinear = true,
 		func_breakable = true,
-		func_physbox = true
+		func_physbox = true,
+		func_breakable_surf = true
 	}
 	if ent1:IsPlayer() && classes[ ent2:GetClass() ] ||
 	ent2:IsPlayer() && classes[ ent1:GetClass() ] then
