@@ -50,7 +50,7 @@ function GM:PlayerSpawn( ply )
 
 		ply:GodEnable()
 		
-		-- make players look like ghostsGM:PlayerCanPickupItem
+		-- make players look like ghosts
 		ply:SetColor( chopchop.settings.colors.ghosts )
 		ply:SetRenderMode( RENDERMODE_TRANSALPHA )
 		ply:SetCustomCollisionCheck( true )

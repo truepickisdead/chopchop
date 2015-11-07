@@ -33,7 +33,6 @@ function CC_PLUGIN.Execute( cmd, sender, args )
 				player.GetAll(),
 				chopchop.settings.colors.chatMsgInfo, tr.restartingRound:insert( sender:Nick() )
 			)
-			-- TODO: cannot access GM from here
 			timer.Simple( 3, function()
 				chopchop.Round.Count = chopchop.Round.Count - 1
 				chopchop:StartRound( chopchop.Round.Mode )
