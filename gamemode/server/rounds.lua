@@ -1,7 +1,7 @@
 -- initial values set at map start
 chopchop.Stage = "WaitingForPlayers"
 chopchop.Round = {
-	Mode = "",
+	Mode = "default",
 	Count = 0,
 	StartTime = nil,
 	EndTime = nil

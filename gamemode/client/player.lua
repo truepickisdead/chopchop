@@ -46,19 +46,26 @@ hook.Add( "HUDPaint", "DrawScreenOverlay",function()
 end)
 
 function MyCalcView( ply, origin, angles, fov )
-	local body = ply:GetRagdollEntity()
-	if !body then return end
+	if ply:GetNWBool( "Died" ) then
+		local body = ply:GetNWEntity( "DeathRagdoll" )
+		if !body or !IsValid( body ) or body == NULL then return end
 
-	print( "found body, setting fp view" )
+		if CurTime() < ply:GetNWFloat( "DeathTime" ) + chopchop.settings.ghostSpawnDelay then
+			local head = body:LookupBone( "ValveBiped.Bip01_Head1" )
+			body:ManipulateBoneScale( head, Vector( 0, 0, 0) )
+			local eyes = body:GetAttachment( body:LookupAttachment( "eyes" ) )
+			local view = {
+				origin = eyes.Pos - eyes.Ang:Forward() * 6,
+				angles = eyes.Ang,
+				fov = 90
+			}
 
-	local eyes = body:GetAttachment( body:LookupAttachment( "eyes" ) )
-	local view = {
-		origin = eyes.Pos,
-		angles = eyes.Ang,
-		fov = 90
-	}
-
-	return view
+			return view
+		else
+			local head = body:LookupBone( "ValveBiped.Bip01_Head1" )
+			body:ManipulateBoneScale( head, Vector( 1, 1, 1) )
+		end
+	end
 end
 
 hook.Add( "CalcView", "FPDeath", MyCalcView )

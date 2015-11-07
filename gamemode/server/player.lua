@@ -24,7 +24,7 @@ function GM:PlayerSpawn( ply )
 
 		-- some movement properties
 			-- gender specific
-			ply:SetRunSpeed( 225 * genderSettings.sprintSpeedModifier )
+			ply:SetRunSpeed( 200 * genderSettings.sprintSpeedModifier )
 			ply:SetWalkSpeed( 120 * genderSettings.moveSpeedModifier )
 			ply:SetCrouchedWalkSpeed( 0.5 * genderSettings.crouchedSpeedModifier )
 			-- global
@@ -40,13 +40,10 @@ function GM:PlayerSpawn( ply )
 		ply:SetMaterial( "" )
 	else
 	-- player died previously, spawn as observer
-		local corpse = ply:GetRagdollEntity()
+		local corpse = ply:GetNWEntity( "DeathRagdoll" )
 		if corpse ~= nil then
 			--ply:SetPos( corpse:GetPos() + Vector( 0, 0, -35) )
 		end
-
-		-- make player look in same direction as before death
-		--ply:SetEyeAngles( ply:GetNWVector( "DeathEyeAngle", Vector( 0, 0, 0) ) )
 
 		ply:GodEnable()
 		
@@ -116,6 +113,7 @@ function GM:PlayerInitialSpawn( ply )
 end
 
 function GM:PlayerDeath( victim, inflictor, attacker )
+	victim:SetNWBool( "Died", true )
 	victim:SetNWFloat( "DeathTime", CurTime() )
 end
 
@@ -132,7 +130,7 @@ function GM:PlayerShouldTakeDamage( ply, attacker )
 end
 
 function GM:CanPlayerSuicide( ply )
-	if ply:GetNWBool( "Died", false ) then
+	if ply:GetNWBool( "Died" ) then
 		chopchop.chat:Send(
 			ply,
 			chopchop.settings.colors.chatMsgError, translate.msg.suicideAlreadyDead
@@ -143,13 +141,8 @@ function GM:CanPlayerSuicide( ply )
 	return true
 end
 
-hook.Add( "PlayerDeathThink", "PlyDeathHook", function( ply )
-	ply:SetNWBool( "Died", true )
-	--ply:SetNWVector( "DeathEyeAngle", ply:EyeAngles() )
-end)
-
 hook.Add( "PlayerUse", "GhostsCannotUse", function( ply, ent )
-	if ply:GetNWBool( "Died", false ) then return false end
+	if ply:GetNWBool( "Died" ) then return false end
 end)
 
 -- =======================
