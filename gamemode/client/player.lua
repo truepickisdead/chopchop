@@ -29,8 +29,8 @@ hook.Add( "HUDPaint", "DrawScreenOverlay",function()
 			[ "$pp_colour_addg" ] = 0,
 			[ "$pp_colour_addb" ] = isGhost and 0.01 + 0.19*percent or 0.2*percent,
 			[ "$pp_colour_brightness" ] = 0.1*percent,
-			[ "$pp_colour_contrast" ] = 1 - 1*percent,
-			[ "$pp_colour_colour" ] = isGhost and 0.5 - 0.5*percent or 1 - percent,
+			[ "$pp_colour_contrast" ] = (1 - percent)^2,
+			[ "$pp_colour_colour" ] = (isGhost and 0.5 or 1)*(1 - percent),
 			[ "$pp_colour_mulr" ] = 0,
 			[ "$pp_colour_mulg" ] = 0,
 			[ "$pp_colour_mulb" ] = 0

@@ -7,7 +7,8 @@ chopchop.settings = {
 	ghostSpawnDelay = 5,
 	ghostFadeInDelay = 2,
 
-	-- weapons (bonus weapons: "weapon_name" = [appearance chance], minimal chance is 0.01)
+	-- weapons
+	-- (bonus weapons: "weapon_name" = [appearance chance], minimal chance is 0.01)
 	playerDefaultWeapons = {},
 	murdererMainWeapons = { "weapon_crowbar" },
 	murdererBonusWeapons = {},

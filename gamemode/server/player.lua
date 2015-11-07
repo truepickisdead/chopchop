@@ -1,8 +1,8 @@
 function GM:PlayerThink()
 	for k, ply in pairs( player.GetAll() ) do
 		-- make ghosts "fly" a little when they are falling fast
-		if ply:GetNWBool( "Died" ) && ply:GetVelocity().z < -200 then
-			ply:SetVelocity( Vector( 0, 0, 50) )
+		if ply:GetNWBool( "Died" ) && ply:GetVelocity().z < -250 then
+			ply:SetVelocity( Vector( 0, 0, 25) )
 		end
 	end
 end
@@ -50,7 +50,7 @@ function GM:PlayerSpawn( ply )
 
 		ply:GodEnable()
 		
-		-- make players look like ghosts
+		-- make players look like ghostsGM:PlayerCanPickupItem
 		ply:SetColor( chopchop.settings.colors.ghosts )
 		ply:SetRenderMode( RENDERMODE_TRANSALPHA )
 		ply:SetCustomCollisionCheck( true )
@@ -77,7 +77,26 @@ function GM:PlayerLoadout( ply )
 				if !ply:HasWeapon( wep ) && math.random( chance*100 ) == 1 then ply:Give( wep ) end
 			end
 		end
+
+		ply:Give( "cc_weapon_hands" )
+		ply:SelectWeapon( "cc_weapon_hands" )
 	end
+end
+
+function GM:PlayerCanPickupWeapon( ply, wep )
+	-- ghosts cannot pickup anything
+	if ply:GetNWBool( "Died" ) then return false end
+	-- disallow double weapon pickup
+	if ply:HasWeapon( wep:GetClass() ) then return false end
+
+	return true
+end
+
+function GM:PlayerCanPickupItem( ply, item )
+	-- ghosts cannot pickup anything
+	if ply:GetNWBool( "Died" ) then return false end
+
+	return true
 end
 
 function GM:PlayerSetHandsModel( ply, ent )
