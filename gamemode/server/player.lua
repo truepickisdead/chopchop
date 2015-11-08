@@ -158,7 +158,7 @@ hook.Add( "DoPlayerDeath", "DropWeaponsOnDeath", function( ply, attacker, dmginf
 	for k,wep in pairs( ply:GetWeapons() ) do
 		if !table.HasValue( noDrop, wep:GetClass() ) then ply:DropWeapon( wep ) end
 	end
-	if !table.HasValue( noDrop, ply:GetActiveWeapon():GetClass() ) then
+	if ply:GetActiveWeapon() && !table.HasValue( noDrop, ply:GetActiveWeapon():GetClass() ) then
 		ply:DropWeapon( ply:GetActiveWeapon() )
 	end
 end)
