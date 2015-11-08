@@ -1,41 +1,51 @@
 function chopchop:ConMsg( text )
-	print("[chopchop] " .. text)
+	print("[#] " .. text)
 end
 
 function chopchop:Start()
 	chopchop:ConMsg("Gamemode initialized.")
 
+	chopchop:ConMsg("")
+	chopchop:ConMsg("|============================================================|")
+	chopchop:ConMsg("| MESSAGES PREFIXED BY '[#]' ARE SENT FROM CHOPCHOP GAMEMODE |")
+	chopchop:ConMsg("|============================================================|")
+	chopchop:ConMsg("")
+
+
+	translate = {}
+	chopchop:LoadLanguage( chopchop.settings.language )
 	chopchop:LoadFiles()
 	if SERVER then
 		chopchop:CheckDirectories()
 	end
+	
+	-- there's two separate functions of this in both 'client/... and 'server/administration.lua'
+	chopchop:LoadAdminPlugins()
 end
 
 function chopchop:LoadFiles()
 	-- greetings
 	chopchop:ConMsg("")
-	chopchop:ConMsg("Started loading files...")
+	chopchop:ConMsg( translate.core.loadFilesStart .. ":" )
 
 	local base_folder = GM.FolderName.."/gamemode/"
 	local fls, flds
-	local flcount = 0
 
 	-- load server files
 	if SERVER then
 		chopchop:ConMsg("|")
-		chopchop:ConMsg("|-> Included server files:")
+		chopchop:ConMsg("|-> " .. translate.core.loadFilesServer .. ":")
 
 		fls, flds = file.Find( base_folder .. "server/*.lua", "LUA" )
 		for k, fl in ipairs( fls ) do
 			include( "server/" .. fl )
 			chopchop:ConMsg("| " .. fl)
 		end
-		flcount = flcount + #fls
 	end
 
 	-- load client files
 	chopchop:ConMsg("|")
-	chopchop:ConMsg("|-> Included client files:")
+	chopchop:ConMsg("|-> " .. translate.core.loadFilesClient .. ":")
 
 	fls, flds = file.Find( base_folder .. "client/*.lua", "LUA" )
 	for k, fl in ipairs( fls ) do
@@ -47,11 +57,10 @@ function chopchop:LoadFiles()
 			chopchop:ConMsg( "| " .. fl )
 		end
 	end
-	flcount = flcount + #fls
 
 	-- load shared files
 	chopchop:ConMsg("|")
-	chopchop:ConMsg("|-> Included shared files:")
+	chopchop:ConMsg("|-> " .. translate.core.loadFilesShared .. ":")
 
 	fls, flds = file.Find( base_folder .. "shared/*.lua", "LUA" )
 	for k, fl in ipairs( fls ) do
@@ -59,19 +68,40 @@ function chopchop:LoadFiles()
 		include( "shared/" .. fl )
 		chopchop:ConMsg("| " .. fl)
 	end
-	flcount = flcount + #fls
 
 	-- outro
-	chopchop:ConMsg("Total " .. flcount .. " files found")
+	chopchop:ConMsg("|")
+	chopchop:ConMsg( translate.core.loadFilesFinish )
+end
+
+function chopchop:LoadLanguage( name )
+	local languages = {}
+
+	-- get languages list and send it to clients
+	fls, flds = file.Find( GM.FolderName .. "/gamemode/lang/*.lua", "LUA" )
+	for k, fl in ipairs( fls ) do
+		if SERVER then AddCSLuaFile( "lang/" .. fl ) end
+		languages[ string.Left( fl, string.find( fl, ".lua" ) - 1 ) ] = true
+	end
+
+	-- failsafe: if language not found, select 'eng'
+	if !languages[ name ] then
+		chopchop:ConMsg( "ERROR: Language '" .. name .. "' not found" )
+		name = "eng"
+	end 
+
+	include( "lang/" .. name .. ".lua" )
+	chopchop:ConMsg( "Language is set to '" .. name .. "'." )
+	chopchop:ConMsg( translate.welcome )
 end
 
 function chopchop:CheckDirectories()
 	chopchop:ConMsg("")
-	chopchop:ConMsg("Checking data...")
+	chopchop:ConMsg( translate.core.checkingData .. "..." )
 
 	if !file.CheckFolder("chopchop", "DATA") then
-		chopchop:ConMsg("| ChopChop was launched first time. Creating data folders...")
+		chopchop:ConMsg( "| " .. translate.core.checkingDataFirstTime .. "..." )
 	end
 
-	chopchop:ConMsg("Folders are OK")
+	chopchop:ConMsg( translate.core.checkingDataOK )
 end
