@@ -106,6 +106,13 @@ function GM:PlayerCanPickupWeapon( ply, wep )
 	-- disallow double weapon pickup
 	if ply:HasWeapon( wep:GetClass() ) then return false end
 
+	-- cannot pickup disallowed weapons
+	if ply.IsManiac then
+		if table.HasValue( chopchop.settings.maniacDisallowedWeapons, wep:GetClass() ) then return false end 
+	else
+		if table.HasValue( chopchop.settings.bystanderDisallowedWeapons, wep:GetClass() ) then return false end
+	end
+
 	return true
 end
 

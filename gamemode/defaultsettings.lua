@@ -12,9 +12,11 @@ chopchop.settings = {
 	playerDefaultWeapons = { "weapon_physgun" },
 	maniacMainWeapon = "weapon_crowbar",
 	maniacBonusWeapons = {},
+	maniacDisallowedWeapons = { "weapon_357" },
 	bystanderGun = "weapon_357",
 	bystanderBonusWeapons = { ["weapon_357"] = 0.1 },
-	
+	bystanderDisallowedWeapons = { "weapon_crowbar" },
+
 	-- movement settings
 	plyDuckSpeed = 0.35,
 	plyCanWalk = true,
