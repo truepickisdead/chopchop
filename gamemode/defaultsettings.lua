@@ -1,7 +1,7 @@
 chopchop.settings = {
 	-- global
 	debug = true,
-	language = "eng",
+	language = "rus",
 	maxCorpsesPerPlayer = 2,
 	maxCorpsesPerServer = 20,
 	ghostSpawnDelay = 5,
@@ -19,6 +19,14 @@ chopchop.settings = {
 	plyDuckSpeed = 0.35,
 	plyCanWalk = false,
 	onlyMurdererCanRun = true
+}
+
+chopchop.settings.playerLabels = {
+	labelFadeIn = 0.25,
+	labelFadeOut = 0.75,
+	labelHideDelay = 1.5,
+	viewDist = 450,
+	viewDistAlt = 200
 }
 
 -- visuals

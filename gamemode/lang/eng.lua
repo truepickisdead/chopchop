@@ -13,7 +13,9 @@ translate.core = {
 	checkingDataOK = "Folders are OK",
 
 	adminLoadPlugins = "Loaded admin plugins",
-	adminLoadLangFailed = "ERROR: Couldn't find translation for current language in plugin '{1}', using '{2}' instead"
+	adminLoadLangFailed = "ERROR: Couldn't find translation for current language in plugin '{1}', using '{2}' instead",
+
+	noNamePlayer = "Wanderer"
 }
 
 -- messages
@@ -53,4 +55,34 @@ translate.admin = {
 
 	commandRun = "{1} ran command '{2}' with arguments {{3}}",
 	noTarget = "Cannot find players using this pattern"
+}
+
+translate.names = {
+	none = {
+		[1] = {
+			"Black",
+			"Bald",
+			"Tiny",
+			"Nude",
+			"Green",
+			"Dirty",
+			"Fallen",
+			"Stupid",
+			"Usual",
+			"Awesome",
+			"Unique"
+		},
+		[2] = {
+			"Apple",
+			"Garry",
+			"Penis",
+			"Cheese",
+			"Moron",
+			"Cock",
+			"Lewis",
+			"Potato",
+			"Flop",
+			"Ashmash"
+		}
+	}
 }

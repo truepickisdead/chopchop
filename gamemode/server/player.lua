@@ -1,12 +1,3 @@
-function chopchop:PlayerThink()
-	for k, ply in pairs( player.GetAll() ) do
-		-- make ghosts "fly" a little when they are falling fast
-		if ply:GetNWBool( "Died" ) && ply:GetVelocity().z < -250 then
-			ply:SetVelocity( Vector( 0, 0, 25) )
-		end
-	end
-end
-
 -- ================
 -- PLAYER LIFECYCLE
 -- ================
@@ -38,6 +29,9 @@ function GM:PlayerSpawn( ply )
 		ply:SetCustomCollisionCheck( false )
 		ply:DrawShadow( true )
 		ply:SetMaterial( "" )
+		ply:SetBloodColor( BLOOD_COLOR_RED )
+
+		chopchop:SetupPlayer( ply )
 	else
 	-- player died previously, spawn as observer
 		local corpse = ply:GetNWEntity( "DeathRagdoll" )
@@ -53,7 +47,34 @@ function GM:PlayerSpawn( ply )
 		ply:SetCustomCollisionCheck( true )
 		ply:DrawShadow( false )
 		ply:SetMaterial( chopchop.settings.colors.ghostsMaterial )
+		ply:SetBloodColor( DONT_BLEED )
 	end
+end
+
+function chopchop:SetupPlayer( ply )
+	-- setup player color
+	local col
+	while !col ||
+		col.x + col.y + col.z > 2.5 || -- check if color is not too bright
+		math.max( math.abs(col.x - col.y), math.abs(col.y - col.z), math.abs(col.z - col.x) ) < 0.25 do -- check if color has enough saturation
+		col = Vector(
+			math.random(255) / 255,
+			math.random(255) / 255,
+			math.random(255) / 255
+		)
+	end
+
+	ply:SetPlayerColor( col )
+	ply:SetNWVector( "CCColor", col )
+
+	-- setup player name
+	local parts = {}
+	for k, v in pairs( translate.names[ ply.Gender ] or translate.names.none ) do
+		local part = table.Random( v )
+		table.insert( parts, 1, part )
+	end
+
+	ply:SetNWString( "CCName", string.Implode( " ", parts ) )
 end
 
 function chopchop:PlayerLoadout( ply )
@@ -106,7 +127,7 @@ end
 
 function GM:PlayerInitialSpawn( ply )
 	-- move to spectators on join
-	ply:SetTeam( chopchop.settings.debug and 1 or 2 )
+	ply:SetTeam( 1 )
 	
 	-- do not spawn player on join
 	timer.Simple(0, function () if IsValid(ply) then ply:KillSilent() end end)
@@ -117,8 +138,12 @@ function GM:PlayerDeath( victim, inflictor, attacker )
 	victim:SetNWFloat( "DeathTime", CurTime() )
 end
 
+function GM:PlayerSilentDeath( victim )
+	victim:SetNWBool( "Died", true )
+end
+
 function GM:GetFallDamage( ply, speed )
-	return ( speed / 8 )
+	return ( speed / 6 )
 end
 
 function GM:PlayerShouldTakeDamage( ply, attacker )

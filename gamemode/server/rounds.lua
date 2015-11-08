@@ -26,6 +26,7 @@ function chopchop:RoundThink()
 	end
 end
 
+util.AddNetworkString( "StartRound" )
 function chopchop:StartRound( mode )
 	game.CleanUpMap()
 
@@ -54,6 +55,10 @@ function chopchop:StartRound( mode )
 		self:PlayerLoadout( ply )
 	end
 
+	net.Start( "StartRound" )
+		-- send round details to clients
+	net.Broadcast()
+
 	if chopchop.settings.debug then chopchop.chat:Send(
 		player.GetAll(),
 		chopchop.settings.colors.chatMsgInfo, "Round started"
@@ -67,8 +72,10 @@ function chopchop:CheckForWin()
 		if ply:Alive() && !ply:GetNWBool( "Died", false ) then table.insert( plysAlive, ply ) end
 	end
 
-	if ( #plysAlive < 2 ) then
-		chopchop:EndRound( "whatever" )
+	if !IsValid( self.Maniac ) || !self.Maniac:Alive() then
+		chopchop:EndRound( "BystandersWin" )
+	elseif #plysAlive < 2 then
+		chopchop:EndRound( "ManiacWin" )
 	end
 end
 
@@ -76,10 +83,19 @@ function chopchop:EndRound( reason )
 	chopchop.Stage = "EndingRound"
 	chopchop.Round.EndTime = CurTime()
 
-	if chopchop.settings.debug then chopchop.chat:Send(
-		player.GetAll(),
-		chopchop.settings.colors.chatMsgInfo, "[DEBUG] Round ended, restarting soon..."
-	) end
+	if chopchop.settings.debug then
+		local msg
+
+		if reason == "ManiacWin" then msg = "[DEBUG] All bystanders are dead. Maniac wins!"
+		elseif reason == "BystandersWin" then msg = "[DEBUG] Maniac is dead. Bystanders win!"
+		elseif reason == "ManiacLeft" then msg = "[DEBUG] Maniac has left. Round ended."
+		end
+
+		chopchop.chat:Send(
+			player.GetAll(),
+			chopchop.settings.colors.chatMsgInfo, msg
+		)
+	end
 end
 
 function GM:PlayerDeathThink( ply )

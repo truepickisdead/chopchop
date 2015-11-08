@@ -1,4 +1,8 @@
-local defaultCol = chopchop.settings.colors.ghosts
+-- fix for clients to fisplay color on ragdolls
+local EntityMeta = FindMetaTable("Entity")
+function EntityMeta:GetPlayerColor()
+	return self:GetNWVector("CCColor") or Vector()
+end
 
 hook.Add( "Think", "PlayerRender", function()
 	local imDead = LocalPlayer():GetNWBool( "Died", false )
@@ -7,23 +11,24 @@ hook.Add( "Think", "PlayerRender", function()
 		local dead = ply:GetNWBool( "Died", false )
 
 		if imDead then
-			ply:SetColor( defaultCol )
+			ply:SetColor( chopchop.settings.colors.ghosts )
 		else
 			if dead then
 				ply:SetColor( Color( 255, 255, 255, 0 ) )
 			else
-				ply:SetColor( defaultCol )
+				ply:SetColor( chopchop.settings.colors.ghosts )
 			end
 		end
 	end
 end)
 
-hook.Add( "HUDPaint", "DrawScreenOverlay",function()
+hook.Add( "HUDPaint", "DrawGhostOverlay", function()
 	if LocalPlayer():GetNWBool( "Died" ) then
 		local isGhost = CurTime() > LocalPlayer():GetNWFloat( "DeathTime" ) + chopchop.settings.ghostSpawnDelay
 		local percent = !isGhost and
 			((CurTime() - LocalPlayer():GetNWFloat( "DeathTime" )) / chopchop.settings.ghostSpawnDelay) or
-			math.Clamp( 1 - (( CurTime() - LocalPlayer():GetNWFloat( "DeathTime" ) - chopchop.settings.ghostSpawnDelay ) / chopchop.settings.ghostFadeInDelay), 0, 1 )
+			(math.Clamp( 1 - (( CurTime() - LocalPlayer():GetNWFloat( "DeathTime" ) - chopchop.settings.ghostSpawnDelay ) / chopchop.settings.ghostFadeInDelay), 0, 1 ))
+
 		local deathColors = {
 			[ "$pp_colour_addr" ] = 0,
 			[ "$pp_colour_addg" ] = 0,
@@ -42,6 +47,26 @@ hook.Add( "HUDPaint", "DrawScreenOverlay",function()
 		end
 
 		DrawColorModify( deathColors )
+	else
+		local percent = 0
+
+		if ( chopchop.Round.StartTime && CurTime() < chopchop.Round.StartTime + chopchop.settings.ghostFadeInDelay ) then
+			percent = (1 - (CurTime() - chopchop.Round.StartTime) / chopchop.settings.ghostFadeInDelay )
+		end
+
+		local deathColors = {
+			[ "$pp_colour_addr" ] = 0,
+			[ "$pp_colour_addg" ] = 0,
+			[ "$pp_colour_addb" ] = 0.2*percent,
+			[ "$pp_colour_brightness" ] = 0.1*percent,
+			[ "$pp_colour_contrast" ] = (1 - percent)^2,
+			[ "$pp_colour_colour" ] = 1 - percent,
+			[ "$pp_colour_mulr" ] = 0,
+			[ "$pp_colour_mulg" ] = 0,
+			[ "$pp_colour_mulb" ] = 0
+		}
+		
+		if percent ~= 0 then DrawColorModify( deathColors ) end
 	end
 end)
 

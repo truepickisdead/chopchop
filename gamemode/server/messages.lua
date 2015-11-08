@@ -42,7 +42,7 @@ function GM:PlayerSay( sender, text, teamChat )
 		chopchop.admin.cmd( sender, text:sub(2) )
 	-- if not, just send message from his GameName
 	else
-		local name = sender.GameName or "Mr. Error"
+		local name = sender:GetNWString( "CCName", "Mr. Error" )
 
 		-- alive players cannot see ghosts chat
 		local receivers = {}
@@ -53,7 +53,7 @@ function GM:PlayerSay( sender, text, teamChat )
 		print( ( sender:GetNWBool( "Died", false ) and "*ghost* " or "") .. sender:Nick() .. " (" .. name .. "): " .. text )
 		chopchop.chat:Send(
 			receivers,
-			Color(255, 255, 100), name,
+			(sender:GetNWVector( "CCColor", Vector( 1, 1, 0.4 ) )):ToColor(), name,
 			Color(255, 255, 255), ": " .. text
 		)
 	end

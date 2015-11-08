@@ -66,6 +66,8 @@ function PM:CreateRagdoll( attacker, dmginfo )
 	ent.Corpse.Name = self:Nick()
 	ent.Corpse.CauseDeath = ""
 	ent.Corpse.Attacker = ""
+	ent:SetNWString( "CCName", self:GetNWString( "CCName" ) )
+	ent:SetNWString( "CCColor", self:GetNWString( "CCColor" ) )
 	if IsValid(attacker) && attacker:IsPlayer() then
 		if attacker == self then
 			if ent.Corpse.CauseDeath == "" then

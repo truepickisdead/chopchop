@@ -1,0 +1,33 @@
+surface.CreateFont( "Octo3DHUDmid", {
+	font = "Trebuchet",
+	size = 64,
+	weight = 600,
+	blursize = 0,
+	scanlines = 0,
+	antialias = true,
+	underline = false,
+	italic = false,
+	strikeout = false,
+	symbol = false,
+	rotary = false,
+	shadow = false,
+	additive = false,
+	outline = false,
+} )
+
+surface.CreateFont( "Octo3DHUDsmall", {
+	font = "Trebuchet",
+	size = 48,
+	weight = 500,
+	blursize = 0,
+	scanlines = 0,
+	antialias = true,
+	underline = false,
+	italic = false,
+	strikeout = false,
+	symbol = false,
+	rotary = false,
+	shadow = false,
+	additive = false,
+	outline = false,
+} )

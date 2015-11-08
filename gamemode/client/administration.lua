@@ -52,7 +52,7 @@ end
 function chopchop:LoadAdminPlugins()
 	-- hacky hack: do not send request immediately
 	timer.Simple( 1, function()
-		chopchop:ConMsg( "Sending request for plugin list to server..." )
+		if chopchop.settings.debug then chopchop:ConMsg( "Sending request for plugin list to server..." ) end
 		net.Start( "GetAdminPlugins" )
 		net.SendToServer()
 	end)
@@ -60,7 +60,7 @@ end
 
 net.Receive( "AdminPlugins", function( len )
 	chopchop.admin.plugins = net.ReadTable()
-	chopchop:ConMsg( "Plugin list received" )
+	if chopchop.settings.debug then chopchop:ConMsg( "Plugin list received" ) end
 end)
 
 concommand.Add( "cc", chopchop.admin.conCmd, chopchop.admin.conCmdAutoComplete, "The ultimate master-function of ChopChop" )
