@@ -17,7 +17,7 @@ chopchop.settings = {
 	
 	-- movement settings
 	plyDuckSpeed = 0.35,
-	plyCanWalk = false,
+	plyCanWalk = true,
 	onlyMurdererCanRun = true
 }
 
