@@ -54,7 +54,9 @@ translate.admin = {
 	wrongCommand = "Command '{1}' does not exist!",
 
 	commandRun = "{1} ran command '{2}' with arguments {{3}}",
-	noTarget = "Cannot find players using this pattern"
+	noTarget = "Cannot find players using this pattern",
+	wrongArgs = "Wrong arguments. Type 'cc help {1}' to get help with this.",
+	tooManyTargets = "Here's what matches you request: {1}. Only one target needed."
 }
 
 translate.names = {
@@ -70,7 +72,7 @@ translate.names = {
 			"Stupid",
 			"Usual",
 			"Awesome",
-			"Unique"
+			"Pussy"
 		},
 		[2] = {
 			"Apple",
@@ -82,7 +84,7 @@ translate.names = {
 			"Lewis",
 			"Potato",
 			"Flop",
-			"Ashmash"
+			"Pussy"
 		}
 	}
 }

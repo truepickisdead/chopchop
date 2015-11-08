@@ -33,7 +33,7 @@ function GM:PlayerSpawn( ply )
 
 		chopchop:SetupPlayer( ply )
 	else
-	-- player died previously, spawn as observer
+	-- player died previously, spawn as ghost
 		local corpse = ply:GetNWEntity( "DeathRagdoll" )
 		if corpse ~= nil then
 			--ply:SetPos( corpse:GetPos() + Vector( 0, 0, -35) )

@@ -123,7 +123,8 @@ hook.Add("PostDrawTranslucentRenderables", "Octo3DHUD", function()
 					elseif !v.entity:Crouching() && v.offset == 60 then v.offset = 80 end
 				end
 
-				opacity = ( v.entity:GetNWBool( "Died" ) && v.entity:GetClass() ~= "prop_ragdoll" ) and 0.5*opacity or opacity
+				opacity = ( v.entity:GetNWBool( "Died" ) && v.entity:GetClass() ~= "prop_ragdoll" ) and
+					chopchop.settings.playerLabels.ghostLabelOpacity*opacity or opacity
 
 				cam.Start3D2D( v.entity:GetPos() + Vector(0, 0, v.offset), textAng, 0.12 )
 			        draw.DrawText(v.text, "Octo3DHUDmid", 5, -27, Color(0, 0, 0, 25 * opacity), TEXT_ALIGN_CENTER )

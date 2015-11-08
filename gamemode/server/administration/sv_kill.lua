@@ -18,7 +18,7 @@ CC_PLUGIN.Translate = {
 	}
 }
 
-function CC_PLUGIN.Execute( cmd, sender, args )
+function CC_PLUGIN:Execute( cmd, sender, args )
 	local tr = translate.plugins[ "Kill" ]
 	local targets = {}
 

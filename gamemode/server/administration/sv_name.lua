@@ -12,7 +12,7 @@ CC_PLUGIN.Translate = {
 	}
 }
 
-function CC_PLUGIN.Execute( cmd, sender, args )
+function CC_PLUGIN:Execute( cmd, sender, args )
 	local tr = translate.plugins[ "GameName" ]
 
 	if args != nil and #args > 0 then
