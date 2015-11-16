@@ -118,6 +118,8 @@ hook.Add("PostDrawTranslucentRenderables", "Octo3DHUD", function()
 					and (CurTime() - v.spawnAltTime) / chopchop.settings.playerLabels.labelFadeIn
 					or math.Clamp( (v.hideAltTime - CurTime()) / chopchop.settings.playerLabels.labelFadeOut, 0, 1 )
 
+				local color = v.entity:GetNWVector( "CCColor", Vector( 0, 0, 0 ) )
+
 				if ( v.entity:IsPlayer() ) then
 					if v.entity:Crouching() && v.offset == 80 then v.offset = 60
 					elseif !v.entity:Crouching() && v.offset == 60 then v.offset = 80 end
@@ -132,7 +134,7 @@ hook.Add("PostDrawTranslucentRenderables", "Octo3DHUD", function()
 			        draw.DrawText(v.text, "Octo3DHUDmid", 3, -29, Color(0, 0, 0, 75 * opacity), TEXT_ALIGN_CENTER )
 			        draw.DrawText(v.text, "Octo3DHUDmid", 2, -30, Color(0, 0, 0, 100 * opacity), TEXT_ALIGN_CENTER )
 			        draw.DrawText(v.text, "Octo3DHUDmid", 1, -31, Color(0, 0, 0, 150 * opacity), TEXT_ALIGN_CENTER )
-			        draw.DrawText(v.text, "Octo3DHUDmid", 0, -32, Color(255, 255, 255, 255 * opacity), TEXT_ALIGN_CENTER )
+			        draw.DrawText(v.text, "Octo3DHUDmid", 0, -32, Color( color.x * 255, color.y * 255, color.z * 255, 255 * opacity), TEXT_ALIGN_CENTER )
 
 			        --[[draw.DrawText(v.altText, "Octo3DHUDsmall", 3, 31, Color(0, 0, 0, 75 * altopacity * opacity), TEXT_ALIGN_CENTER )
 			        draw.DrawText(v.altText, "Octo3DHUDsmall", 2, 30, Color(0, 0, 0, 150 * altopacity * opacity), TEXT_ALIGN_CENTER )
