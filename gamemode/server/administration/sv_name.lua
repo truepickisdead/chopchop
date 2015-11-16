@@ -1,4 +1,4 @@
-CC_PLUGIN.Name = "GameName"
+CC_PLUGIN.Name = "Change name"
 CC_PLUGIN.Commands = {"name"}
 
 CC_PLUGIN.Translate = {
@@ -13,13 +13,13 @@ CC_PLUGIN.Translate = {
 }
 
 function CC_PLUGIN:Execute( cmd, sender, args )
-	local tr = translate.plugins[ "GameName" ]
+	local tr = translate.plugins[ self.Name ]
 
 	if args != nil and #args > 0 then
-		sender.GameName = string.Implode( " ", args )
+		sender:SetNWString( "CCName", string.Implode( " ", args ) )
 		chopchop.chat:Send(
 			sender,
-			chopchop.settings.colors.chatMsgInfo, tr.nameChanged:insert( sender.GameName )
+			chopchop.settings.colors.chatMsgInfo, tr.nameChanged:insert( sender:GetNWString( "CCName" ) )
 		)
 	else
 		chopchop.chat:Send(
