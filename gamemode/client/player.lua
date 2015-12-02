@@ -33,19 +33,20 @@ hook.Add( "HUDPaint", "DrawGhostOverlay", function()
 			[ "$pp_colour_addr" ] = 0,
 			[ "$pp_colour_addg" ] = 0,
 			[ "$pp_colour_addb" ] = isGhost and 0.01 + 0.19*percent or 0.2*percent,
-			[ "$pp_colour_brightness" ] = 0.1*percent,
-			[ "$pp_colour_contrast" ] = (1 - percent)^2,
+			[ "$pp_colour_brightness" ] = -0.1*percent,
+			[ "$pp_colour_contrast" ] = 1 - 0.6*percent,
 			[ "$pp_colour_colour" ] = (isGhost and 0.5 or 1)*(1 - percent),
 			[ "$pp_colour_mulr" ] = 0,
 			[ "$pp_colour_mulg" ] = 0,
 			[ "$pp_colour_mulb" ] = 0
 		}
 
-		if percent ~= 0 then
-			DrawMotionBlur( 1 - 1*percent*0.98, 1, 0.01 )
-			DrawBloom( 1 - percent*0.98, 2, 9, 9, 3, 1, 1, 1, 1 )
+		if isGhost then DrawMaterialOverlay( "models/props/cs_office/clouds", 1-percent ) end
+		if percent ~= 0 && CurTime() > LocalPlayer():GetNWFloat( "DeathTime" ) + 0.2 then
+			DrawMotionBlur( 0, percent, 0.02 )
+			DrawBloom( (1 - percent*1.2)^2, 2, 9, 9, 3, 1, 1, 1, 1 )
 		end
-
+		
 		DrawColorModify( deathColors )
 	else
 		local percent = 0
@@ -57,16 +58,16 @@ hook.Add( "HUDPaint", "DrawGhostOverlay", function()
 		local deathColors = {
 			[ "$pp_colour_addr" ] = 0,
 			[ "$pp_colour_addg" ] = 0,
-			[ "$pp_colour_addb" ] = 0.2*percent,
-			[ "$pp_colour_brightness" ] = 0.1*percent,
+			[ "$pp_colour_addb" ] = 0.1*percent,
+			[ "$pp_colour_brightness" ] = 0.05*percent,
 			[ "$pp_colour_contrast" ] = (1 - percent)^2,
-			[ "$pp_colour_colour" ] = 1 - percent,
+			[ "$pp_colour_colour" ] = 1,
 			[ "$pp_colour_mulr" ] = 0,
 			[ "$pp_colour_mulg" ] = 0,
 			[ "$pp_colour_mulb" ] = 0
 		}
 		
-		if percent ~= 0 then DrawColorModify( deathColors ) end
+		if percent ~= 0 then DrawColorModify( deathColors ) end	
 	end
 end)
 

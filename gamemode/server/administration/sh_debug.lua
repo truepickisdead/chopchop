@@ -1,7 +1,7 @@
 CC_PLUGIN.Name = "Debug Tools"
 CC_PLUGIN.Commands = {"debug"}
 
-function CC_PLUGIN.Execute( cmd, sender, args )
+function CC_PLUGIN:Execute( cmd, sender, args )
 	if args ~= nil and #args > 0 then
 		if args[1] == "class" then
 			local target = sender:GetEyeTrace().Entity

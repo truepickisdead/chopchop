@@ -12,7 +12,7 @@ CC_PLUGIN.Translate = {
 	}
 }
 
-function CC_PLUGIN.Execute( cmd, sender, args )
+function CC_PLUGIN:Execute( cmd, sender, args )
 	local tr = translate.plugins[ "Move to spectators" ]
 
 	local function doIt( ply )

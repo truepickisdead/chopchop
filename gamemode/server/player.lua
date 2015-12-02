@@ -30,13 +30,15 @@ function GM:PlayerSpawn( ply )
 		ply:DrawShadow( true )
 		ply:SetMaterial( "" )
 		ply:SetBloodColor( BLOOD_COLOR_RED )
+		ply:SetJumpPower( 200 )
 
 		chopchop:SetupPlayer( ply )
 	else
-	-- player died previously, spawn as observer
+	-- player died previously, spawn as ghost
 		local corpse = ply:GetNWEntity( "DeathRagdoll" )
-		if corpse ~= nil then
-			--ply:SetPos( corpse:GetPos() + Vector( 0, 0, -35) )
+		if !(!corpse || corpse == NULL || !IsValid(corpse)) then
+			local pos = chopchop:FindSuitablePosition( corpse:GetPos(), ply, {around = 40, above = 80}, player.GetAll() )
+			if pos then ply:SetPos( pos ) end
 		end
 
 		ply:GodEnable()
@@ -48,6 +50,7 @@ function GM:PlayerSpawn( ply )
 		ply:DrawShadow( false )
 		ply:SetMaterial( chopchop.settings.colors.ghostsMaterial )
 		ply:SetBloodColor( DONT_BLEED )
+		ply:SetJumpPower( 100 )
 	end
 end
 
@@ -105,6 +108,13 @@ function GM:PlayerCanPickupWeapon( ply, wep )
 	-- disallow double weapon pickup
 	if ply:HasWeapon( wep:GetClass() ) then return false end
 
+	-- cannot pickup disallowed weapons
+	if ply.IsManiac then
+		if table.HasValue( chopchop.settings.maniacDisallowedWeapons, wep:GetClass() ) then return false end 
+	else
+		if table.HasValue( chopchop.settings.bystanderDisallowedWeapons, wep:GetClass() ) then return false end
+	end
+
 	return true
 end
 
@@ -137,6 +147,23 @@ function GM:PlayerDeath( victim, inflictor, attacker )
 	victim:SetNWBool( "Died", true )
 	victim:SetNWFloat( "DeathTime", CurTime() )
 end
+
+hook.Add( "DoPlayerDeath", "DropWeaponsOnDeath", function( ply, attacker, dmginfo )
+	-- create a table of not-drop weapons
+	local noDrop = { chopchop.settings.maniacMainWeapon, "weapon_physgun", "cc_weapon_hands" }
+	table.Add( noDrop, playerDefaultWeapons )
+	for k, wep2 in pairs( chopchop.settings.maniacBonusWeapons ) do
+		table.insert( noDrop, wep2 )
+	end
+	
+	-- drop stored weapons
+	for k,wep in pairs( ply:GetWeapons() ) do
+		if !table.HasValue( noDrop, wep:GetClass() ) then ply:DropWeapon( wep ) end
+	end
+	if ply:GetActiveWeapon() && !table.HasValue( noDrop, ply:GetActiveWeapon():GetClass() ) then
+		ply:DropWeapon( ply:GetActiveWeapon() )
+	end
+end)
 
 function GM:PlayerSilentDeath( victim )
 	victim:SetNWBool( "Died", true )
@@ -174,3 +201,4 @@ end)
 -- DISABLED BASE FUNCTIONS
 -- =======================
 function GM:PlayerDeathSound() return true end
+function GM:PlayerSpray( ply ) return true end

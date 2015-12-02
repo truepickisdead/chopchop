@@ -114,16 +114,19 @@ hook.Add("PostDrawTranslucentRenderables", "Octo3DHUD", function()
 					and (CurTime() - v.spawnTime) / chopchop.settings.playerLabels.labelFadeIn
 					or math.Clamp( (v.hideTime - CurTime()) / chopchop.settings.playerLabels.labelFadeOut, 0, 1 )
 
-				local altopacity = (CurTime() - v.spawnAltTime < chopchop.settings.playerLabels.labelFadeIn)
+				--[[local altopacity = (CurTime() - v.spawnAltTime < chopchop.settings.playerLabels.labelFadeIn)
 					and (CurTime() - v.spawnAltTime) / chopchop.settings.playerLabels.labelFadeIn
-					or math.Clamp( (v.hideAltTime - CurTime()) / chopchop.settings.playerLabels.labelFadeOut, 0, 1 )
+					or math.Clamp( (v.hideAltTime - CurTime()) / chopchop.settings.playerLabels.labelFadeOut, 0, 1 )]]
+
+				local color = v.entity:GetNWVector( "CCColor", Vector( 0, 0, 0 ) )
 
 				if ( v.entity:IsPlayer() ) then
 					if v.entity:Crouching() && v.offset == 80 then v.offset = 60
 					elseif !v.entity:Crouching() && v.offset == 60 then v.offset = 80 end
 				end
 
-				opacity = ( v.entity:GetNWBool( "Died" ) && v.entity:GetClass() ~= "prop_ragdoll" ) and 0.5*opacity or opacity
+				opacity = ( v.entity:GetNWBool( "Died" ) && v.entity:GetClass() ~= "prop_ragdoll" ) and
+					chopchop.settings.playerLabels.ghostLabelOpacity*opacity or opacity
 
 				cam.Start3D2D( v.entity:GetPos() + Vector(0, 0, v.offset), textAng, 0.12 )
 			        draw.DrawText(v.text, "Octo3DHUDmid", 5, -27, Color(0, 0, 0, 25 * opacity), TEXT_ALIGN_CENTER )
@@ -131,7 +134,7 @@ hook.Add("PostDrawTranslucentRenderables", "Octo3DHUD", function()
 			        draw.DrawText(v.text, "Octo3DHUDmid", 3, -29, Color(0, 0, 0, 75 * opacity), TEXT_ALIGN_CENTER )
 			        draw.DrawText(v.text, "Octo3DHUDmid", 2, -30, Color(0, 0, 0, 100 * opacity), TEXT_ALIGN_CENTER )
 			        draw.DrawText(v.text, "Octo3DHUDmid", 1, -31, Color(0, 0, 0, 150 * opacity), TEXT_ALIGN_CENTER )
-			        draw.DrawText(v.text, "Octo3DHUDmid", 0, -32, Color(255, 255, 255, 255 * opacity), TEXT_ALIGN_CENTER )
+			        draw.DrawText(v.text, "Octo3DHUDmid", 0, -32, Color( color.x * 255, color.y * 255, color.z * 255, 255 * opacity), TEXT_ALIGN_CENTER )
 
 			        --[[draw.DrawText(v.altText, "Octo3DHUDsmall", 3, 31, Color(0, 0, 0, 75 * altopacity * opacity), TEXT_ALIGN_CENTER )
 			        draw.DrawText(v.altText, "Octo3DHUDsmall", 2, 30, Color(0, 0, 0, 150 * altopacity * opacity), TEXT_ALIGN_CENTER )

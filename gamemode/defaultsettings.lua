@@ -12,12 +12,14 @@ chopchop.settings = {
 	playerDefaultWeapons = { "weapon_physgun" },
 	maniacMainWeapon = "weapon_crowbar",
 	maniacBonusWeapons = {},
+	maniacDisallowedWeapons = { "weapon_357" },
 	bystanderGun = "weapon_357",
 	bystanderBonusWeapons = { ["weapon_357"] = 0.1 },
-	
+	bystanderDisallowedWeapons = { "weapon_crowbar" },
+
 	-- movement settings
 	plyDuckSpeed = 0.35,
-	plyCanWalk = false,
+	plyCanWalk = true,
 	onlyMurdererCanRun = true
 }
 
@@ -26,7 +28,8 @@ chopchop.settings.playerLabels = {
 	labelFadeOut = 0.75,
 	labelHideDelay = 1.5,
 	viewDist = 450,
-	viewDistAlt = 200
+	viewDistAlt = 200,
+	ghostLabelOpacity = 0.3
 }
 
 -- visuals

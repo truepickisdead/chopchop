@@ -54,35 +54,18 @@ translate.admin = {
 	wrongCommand = "Command '{1}' does not exist!",
 
 	commandRun = "{1} ran command '{2}' with arguments {{3}}",
-	noTarget = "Cannot find players using this pattern"
+	noTarget = "Cannot find players using this pattern",
+	wrongArgs = "Wrong arguments. Type 'cc help {1}' to get help with this.",
+	tooManyTargets = "Here's what matches you request: {1}. Only one target needed."
 }
 
 translate.names = {
 	none = {
 		[1] = {
-			"Black",
-			"Bald",
-			"Tiny",
-			"Nude",
-			"Green",
-			"Dirty",
-			"Fallen",
-			"Stupid",
-			"Usual",
-			"Awesome",
-			"Unique"
+			"Black", "Bald", "Tiny", "Nude", "Green", "Dirty", "Fallen", "Stupid", "Usual", "Awesome", "Pussy"
 		},
 		[2] = {
-			"Apple",
-			"Garry",
-			"Penis",
-			"Cheese",
-			"Moron",
-			"Cock",
-			"Lewis",
-			"Potato",
-			"Flop",
-			"Ashmash"
+			"Apple", "Garry", "Penis", "Cheese", "Moron", "Cock", "Lewis", "Potato", "Flop", "Pussy"
 		}
 	}
 }

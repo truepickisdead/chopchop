@@ -16,7 +16,7 @@ CC_PLUGIN.Translate = {
 	}
 }
 
-function CC_PLUGIN.Execute( cmd, sender, args )
+function CC_PLUGIN:Execute( cmd, sender, args )
 	local tr = translate.plugins[ "Restart" ]
 	
 	if #args > 0 then

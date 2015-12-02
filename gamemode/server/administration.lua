@@ -1,6 +1,6 @@
 chopchop.admin = {}
 
-function chopchop:LoadAdminPlugins()
+function chopchop.admin:LoadPlugins()
 	chopchop.admin.plugins = {}
 	translate.plugins = {}
 	local msg = translate.core.adminLoadPlugins .. ": "
@@ -120,7 +120,7 @@ function chopchop.admin.cmd( sender, text )
 				translate.admin.commandRun:insert( sender:Nick(), cmd, string.Implode( ", ", args ) )
 			)
 
-			chopchop.admin.plugins[ pluginName ].Execute( cmd, sender, args )
+			chopchop.admin.plugins[ pluginName ]:Execute( cmd, sender, args )
 		end
 	else
 		chopchop.chat:Send(
