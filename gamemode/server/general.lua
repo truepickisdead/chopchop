@@ -1,6 +1,5 @@
 function GM:Think()
 	chopchop:RoundThink()
-	chopchop:PlayerThink()
 end
 
 function chopchop:FindSuitablePosition( pos, ent, dist, filtr )

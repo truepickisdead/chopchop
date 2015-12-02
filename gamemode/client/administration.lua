@@ -49,7 +49,7 @@ function chopchop.admin.conCmdAutoComplete( cmd, strargs )
 	return out
 end
 
-function chopchop:LoadAdminPlugins()
+function chopchop.admin:LoadPlugins()
 	-- hacky hack: do not send request immediately
 	timer.Simple( 1, function()
 		if chopchop.settings.debug then chopchop:ConMsg( "Sending request for plugin list to server..." ) end

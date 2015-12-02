@@ -20,7 +20,7 @@ function chopchop:Start()
 	end
 	
 	-- there's two separate functions of this in both 'client/... and 'server/administration.lua'
-	chopchop:LoadAdminPlugins()
+	if chopchop.admin then chopchop.admin:LoadPlugins() end
 end
 
 function chopchop:LoadFiles()

@@ -38,7 +38,7 @@ end
 
 function GM:PlayerSay( sender, text, teamChat )
 	-- check if player tried to use command
-	if string.StartWith(text, "!") || string.StartWith(text, "/") then
+	if (string.StartWith(text, "!") || string.StartWith(text, "/")) && chopchop.admin then
 		chopchop.admin.cmd( sender, text:sub(2) )
 	-- if not, just send message from his GameName
 	else

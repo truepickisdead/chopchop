@@ -1,6 +1,6 @@
 chopchop.admin = {}
 
-function chopchop:LoadAdminPlugins()
+function chopchop.admin:LoadPlugins()
 	chopchop.admin.plugins = {}
 	translate.plugins = {}
 	local msg = translate.core.adminLoadPlugins .. ": "

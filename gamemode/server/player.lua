@@ -30,6 +30,7 @@ function GM:PlayerSpawn( ply )
 		ply:DrawShadow( true )
 		ply:SetMaterial( "" )
 		ply:SetBloodColor( BLOOD_COLOR_RED )
+		ply:SetJumpPower( 200 )
 
 		chopchop:SetupPlayer( ply )
 	else
@@ -49,6 +50,7 @@ function GM:PlayerSpawn( ply )
 		ply:DrawShadow( false )
 		ply:SetMaterial( chopchop.settings.colors.ghostsMaterial )
 		ply:SetBloodColor( DONT_BLEED )
+		ply:SetJumpPower( 100 )
 	end
 end
 

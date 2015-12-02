@@ -62,29 +62,10 @@ translate.admin = {
 translate.names = {
 	none = {
 		[1] = {
-			"Black",
-			"Bald",
-			"Tiny",
-			"Nude",
-			"Green",
-			"Dirty",
-			"Fallen",
-			"Stupid",
-			"Usual",
-			"Awesome",
-			"Pussy"
+			"Black", "Bald", "Tiny", "Nude", "Green", "Dirty", "Fallen", "Stupid", "Usual", "Awesome", "Pussy"
 		},
 		[2] = {
-			"Apple",
-			"Garry",
-			"Penis",
-			"Cheese",
-			"Moron",
-			"Cock",
-			"Lewis",
-			"Potato",
-			"Flop",
-			"Pussy"
+			"Apple", "Garry", "Penis", "Cheese", "Moron", "Cock", "Lewis", "Potato", "Flop", "Pussy"
 		}
 	}
 }

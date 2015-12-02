@@ -114,9 +114,9 @@ hook.Add("PostDrawTranslucentRenderables", "Octo3DHUD", function()
 					and (CurTime() - v.spawnTime) / chopchop.settings.playerLabels.labelFadeIn
 					or math.Clamp( (v.hideTime - CurTime()) / chopchop.settings.playerLabels.labelFadeOut, 0, 1 )
 
-				local altopacity = (CurTime() - v.spawnAltTime < chopchop.settings.playerLabels.labelFadeIn)
+				--[[local altopacity = (CurTime() - v.spawnAltTime < chopchop.settings.playerLabels.labelFadeIn)
 					and (CurTime() - v.spawnAltTime) / chopchop.settings.playerLabels.labelFadeIn
-					or math.Clamp( (v.hideAltTime - CurTime()) / chopchop.settings.playerLabels.labelFadeOut, 0, 1 )
+					or math.Clamp( (v.hideAltTime - CurTime()) / chopchop.settings.playerLabels.labelFadeOut, 0, 1 )]]
 
 				local color = v.entity:GetNWVector( "CCColor", Vector( 0, 0, 0 ) )
 
