@@ -69,12 +69,13 @@ hook.Add("Think", "HUDTargetThink", function ()
 		if trace.Entity:IsPlayer() then
 			-- players
 			_text = trace.Entity:GetNWString( "CC_Name" )
-			_altText = trace.Entity:Nick()
+			_altText = LocalPlayer():GetNWBool( "Died" ) and trace.Entity:Nick() or ""
 			if trace.Entity:Crouching() then _offset = 60
 			else _offset = 80 end
 		elseif (trace.Entity:GetClass() == "prop_ragdoll") then
 			-- ragdolls
 			_text = trace.Entity:GetNWString( "CC_Name" )
+			_altText = LocalPlayer():GetNWBool( "Died" ) and trace.Entity:GetNWString( "CC_Nick" ) or ""
 			_offset = 30
 		else
 		-- if not one of them, exit
@@ -102,7 +103,8 @@ end)
 hook.Add("PostDrawTranslucentRenderables", "Octo3DHUD", function()
 	if LocalPlayer():Alive() then
 		for k,v in pairs(chopchop.labels3d) do
-			if v.hideTime <= CurTime() || !IsValid(v.entity) then
+			if v.hideTime <= CurTime() || !IsValid(v.entity) ||
+				(v.entity:GetClass() ~= "prop_ragdoll" && !LocalPlayer():GetNWBool( "Died" ) && v.entity:GetNWBool( "Died" )) then
 				-- if label is "timed out" delete it
 				table.removekey(chopchop.labels3d, k)
 			else
@@ -114,9 +116,9 @@ hook.Add("PostDrawTranslucentRenderables", "Octo3DHUD", function()
 					and (CurTime() - v.spawnTime) / chopchop.settings.playerLabels.labelFadeIn
 					or math.Clamp( (v.hideTime - CurTime()) / chopchop.settings.playerLabels.labelFadeOut, 0, 1 )
 
-				--[[local altopacity = (CurTime() - v.spawnAltTime < chopchop.settings.playerLabels.labelFadeIn)
+				local altopacity = (CurTime() - v.spawnAltTime < chopchop.settings.playerLabels.labelFadeIn)
 					and (CurTime() - v.spawnAltTime) / chopchop.settings.playerLabels.labelFadeIn
-					or math.Clamp( (v.hideAltTime - CurTime()) / chopchop.settings.playerLabels.labelFadeOut, 0, 1 )]]
+					or math.Clamp( (v.hideAltTime - CurTime()) / chopchop.settings.playerLabels.labelFadeOut, 0, 1 )
 
 				local color = !v.entity:GetNWBool( "Died" ) and v.entity:GetNWVector( "CC_Color", Vector( 255, 255, 255 ) ) or Vector( 255, 255, 255 )
 
@@ -136,10 +138,10 @@ hook.Add("PostDrawTranslucentRenderables", "Octo3DHUD", function()
 			        draw.DrawText(v.text, "Octo3DHUDmid", 1, -31, Color(0, 0, 0, 150 * opacity), TEXT_ALIGN_CENTER )
 			        draw.DrawText(v.text, "Octo3DHUDmid", 0, -32, Color( color.x * 255, color.y * 255, color.z * 255, 255 * opacity), TEXT_ALIGN_CENTER )
 
-			        --[[draw.DrawText(v.altText, "Octo3DHUDsmall", 3, 31, Color(0, 0, 0, 75 * altopacity * opacity), TEXT_ALIGN_CENTER )
+			        draw.DrawText(v.altText, "Octo3DHUDsmall", 3, 31, Color(0, 0, 0, 75 * altopacity * opacity), TEXT_ALIGN_CENTER )
 			        draw.DrawText(v.altText, "Octo3DHUDsmall", 2, 30, Color(0, 0, 0, 150 * altopacity * opacity), TEXT_ALIGN_CENTER )
 			        draw.DrawText(v.altText, "Octo3DHUDsmall", 1, 29, Color(0, 0, 0, 200 * altopacity * opacity), TEXT_ALIGN_CENTER )
-			        draw.DrawText(v.altText, "Octo3DHUDsmall", 0, 28, Color(255, 255, 255, 255 * altopacity * opacity), TEXT_ALIGN_CENTER )]]
+			        draw.DrawText(v.altText, "Octo3DHUDsmall", 0, 28, Color(255, 255, 255, 255 * altopacity * opacity), TEXT_ALIGN_CENTER )
 				cam.End3D2D()
 			end
 		end
