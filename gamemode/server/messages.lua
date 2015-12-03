@@ -1,25 +1,8 @@
--- show messages for player join and leave
-gameevent.Listen("player_connect")
-hook.Add("player_connect", "ShowConnect", function( data )
-	chopchop.chat:Send(
-		player.GetAll(),
-		chopchop.settings.colors.chatMsgDefault, translate.msg.plyConnect:insert( data["name"] )
-	)
-end)
-
-gameevent.Listen("player_disconnect")
-hook.Add("player_disconnect", "ShowDisconnect", function( data )
-	chopchop.chat:Send(
-		player.GetAll(),
-		chopchop.settings.colors.chatMsgDefault, translate.msg.plyDisconnect:insert( data["name"] )
-	)
-end)
-
 -- ==================
 -- =====< CHAT >=====
 -- ==================
 chopchop.chat = {}
-util.AddNetworkString("ChatSentToClient")
+util.AddNetworkString("CC_ChatSentToClient")
 
 function chopchop.chat:Send( receivers, ... )
 	local args = { ... }
@@ -31,7 +14,7 @@ function chopchop.chat:Send( receivers, ... )
 	end
 	
 	-- send message to receivers
-	net.Start("ChatSentToClient")
+	net.Start("CC_ChatSentToClient")
 		net.WriteTable(msgdata)
 	net.Send(receivers)
 end
@@ -42,7 +25,7 @@ function GM:PlayerSay( sender, text, teamChat )
 		chopchop.admin.cmd( sender, text:sub(2) )
 	-- if not, just send message from his GameName
 	else
-		local name = sender:GetNWString( "CCName", "Mr. Error" )
+		local name = sender:GetNWString( "CC_Name", "Mr. Error" )
 
 		-- alive players cannot see ghosts chat
 		local receivers = {}
@@ -53,7 +36,7 @@ function GM:PlayerSay( sender, text, teamChat )
 		print( ( sender:GetNWBool( "Died", false ) and "*ghost* " or "") .. sender:Nick() .. " (" .. name .. "): " .. text )
 		chopchop.chat:Send(
 			receivers,
-			(sender:GetNWVector( "CCColor", Vector( 1, 1, 0.4 ) )):ToColor(), name,
+			(sender:GetNWVector( "CC_Color", Vector( 1, 1, 0.4 ) )):ToColor(), name,
 			Color(255, 255, 255), ": " .. text
 		)
 	end

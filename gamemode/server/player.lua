@@ -68,7 +68,7 @@ function chopchop:SetupPlayer( ply )
 	end
 
 	ply:SetPlayerColor( col )
-	ply:SetNWVector( "CCColor", col )
+	ply:SetNWVector( "CC_Color", col )
 
 	-- setup player name
 	local parts = {}
@@ -77,7 +77,7 @@ function chopchop:SetupPlayer( ply )
 		table.insert( parts, 1, part )
 	end
 
-	ply:SetNWString( "CCName", string.Implode( " ", parts ) )
+	ply:SetNWString( "CC_Name", string.Implode( " ", parts ) )
 end
 
 function chopchop:PlayerLoadout( ply )
