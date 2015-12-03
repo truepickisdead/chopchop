@@ -41,7 +41,7 @@ hook.Add( "HUDPaint", "DrawGhostOverlay", function()
 			[ "$pp_colour_mulb" ] = 0
 		}
 
-		if isGhost then DrawMaterialOverlay( "models/props/cs_office/clouds", 1-percent ) end
+		--if isGhost then DrawMaterialOverlay( "models/props/cs_office/clouds", 1-percent ) end
 		if percent ~= 0 && CurTime() > LocalPlayer():GetNWFloat( "DeathTime" ) + 0.2 then
 			DrawMotionBlur( 0, percent, 0.02 )
 			DrawBloom( (1 - percent*1.2)^2, 2, 9, 9, 3, 1, 1, 1, 1 )
