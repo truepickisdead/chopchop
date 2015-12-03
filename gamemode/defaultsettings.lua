@@ -37,6 +37,7 @@ chopchop.settings.colors = {
 	chatMsgDefault = Color( 255, 255, 100 ),
 	chatMsgInfo = Color( 100, 150, 255 ),
 	chatMsgError = Color( 255, 50, 50 ),
+	chatMsgGhost = Color( 150, 200, 255 ),
 
 	ghosts = Color( 255, 255, 255, 5 ),
 	ghostsMaterial = "models/props/cs_office/clouds"

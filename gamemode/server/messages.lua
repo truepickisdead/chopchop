@@ -33,11 +33,12 @@ function GM:PlayerSay( sender, text, teamChat )
 			if self:PlayerCanHear( ply, sender ) then table.insert( receivers, ply ) end
 		end
 
+		local col = (sender:GetNWVector( "CC_Color", Vector( 1, 1, 0.4 ) )):ToColor()
 		print( ( sender:GetNWBool( "Died", false ) and "*ghost* " or "") .. sender:Nick() .. " (" .. name .. "): " .. text )
 		chopchop.chat:Send(
 			receivers,
-			(sender:GetNWVector( "CC_Color", Vector( 1, 1, 0.4 ) )):ToColor(), name,
-			Color(255, 255, 255), ": " .. text
+			col, !sender:GetNWBool( "Died" ) and name or name .. " (" .. sender:Nick() .. ")",
+			!sender:GetNWBool( "Died" ) and Color(255, 255, 255) or chopchop.settings.colors.chatMsgGhost, ": " .. text
 		)
 	end
 
