@@ -118,7 +118,7 @@ hook.Add("PostDrawTranslucentRenderables", "Octo3DHUD", function()
 					and (CurTime() - v.spawnAltTime) / chopchop.settings.playerLabels.labelFadeIn
 					or math.Clamp( (v.hideAltTime - CurTime()) / chopchop.settings.playerLabels.labelFadeOut, 0, 1 )]]
 
-				local color = v.entity:GetNWVector( "CC_Color", Vector( 0, 0, 0 ) )
+				local color = !v.entity:GetNWBool( "Died" ) and v.entity:GetNWVector( "CC_Color", Vector( 255, 255, 255 ) ) or Vector( 255, 255, 255 )
 
 				if ( v.entity:IsPlayer() ) then
 					if v.entity:Crouching() && v.offset == 80 then v.offset = 60
