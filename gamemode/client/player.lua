@@ -1,7 +1,7 @@
 -- fix for clients to fisplay color on ragdolls
 local EntityMeta = FindMetaTable("Entity")
 function EntityMeta:GetPlayerColor()
-	return self:GetNWVector("CCColor") or Vector()
+	return self:GetNWVector("CC_Color") or Vector()
 end
 
 hook.Add( "Think", "PlayerRender", function()

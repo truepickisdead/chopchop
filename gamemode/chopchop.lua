@@ -1,14 +1,14 @@
 function chopchop:ConMsg( text )
-	print("[#] " .. text)
+	print("[cc] " .. text)
 end
 
 function chopchop:Start()
 	chopchop:ConMsg("Gamemode initialized.")
 
 	chopchop:ConMsg("")
-	chopchop:ConMsg("|============================================================|")
-	chopchop:ConMsg("| MESSAGES PREFIXED BY '[#]' ARE SENT FROM CHOPCHOP GAMEMODE |")
-	chopchop:ConMsg("|============================================================|")
+	chopchop:ConMsg("|=============================================================|")
+	chopchop:ConMsg("| MESSAGES PREFIXED BY '[cc]' ARE SENT FROM CHOPCHOP GAMEMODE |")
+	chopchop:ConMsg("|=============================================================|")
 	chopchop:ConMsg("")
 
 
@@ -18,9 +18,6 @@ function chopchop:Start()
 	if SERVER then
 		chopchop:CheckDirectories()
 	end
-	
-	-- there's two separate functions of this in both 'client/... and 'server/administration.lua'
-	if chopchop.admin then chopchop.admin:LoadPlugins() end
 end
 
 function chopchop:LoadFiles()

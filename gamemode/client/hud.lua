@@ -68,13 +68,13 @@ hook.Add("Think", "HUDTargetThink", function ()
 		-- detect only defined entities
 		if trace.Entity:IsPlayer() then
 			-- players
-			_text = trace.Entity:GetNWString( "CCName" )
+			_text = trace.Entity:GetNWString( "CC_Name" )
 			_altText = trace.Entity:Nick()
 			if trace.Entity:Crouching() then _offset = 60
 			else _offset = 80 end
 		elseif (trace.Entity:GetClass() == "prop_ragdoll") then
 			-- ragdolls
-			_text = trace.Entity:GetNWString( "CCName" )
+			_text = trace.Entity:GetNWString( "CC_Name" )
 			_offset = 30
 		else
 		-- if not one of them, exit
@@ -118,7 +118,7 @@ hook.Add("PostDrawTranslucentRenderables", "Octo3DHUD", function()
 					and (CurTime() - v.spawnAltTime) / chopchop.settings.playerLabels.labelFadeIn
 					or math.Clamp( (v.hideAltTime - CurTime()) / chopchop.settings.playerLabels.labelFadeOut, 0, 1 )]]
 
-				local color = v.entity:GetNWVector( "CCColor", Vector( 0, 0, 0 ) )
+				local color = !v.entity:GetNWBool( "Died" ) and v.entity:GetNWVector( "CC_Color", Vector( 255, 255, 255 ) ) or Vector( 255, 255, 255 )
 
 				if ( v.entity:IsPlayer() ) then
 					if v.entity:Crouching() && v.offset == 80 then v.offset = 60

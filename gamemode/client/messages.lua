@@ -8,7 +8,7 @@ end)
 -- ==================
 
 -- get and display incoming messages
-net.Receive("ChatSentToClient", function (length)
+net.Receive("CC_ChatSentToClient", function (length)
 	local dat = net.ReadTable()
 	chat.AddText( unpack(dat) )
 end)
