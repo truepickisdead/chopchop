@@ -10,12 +10,12 @@ chopchop.settings = {
 	-- weapons
 	-- (bonus weapons: "weapon_name" = [appearance chance], minimal chance is 0.01)
 	playerDefaultWeapons = { "weapon_physgun" },
-	maniacMainWeapon = "weapon_crowbar",
+	maniacMainWeapon = "cc_weapon_knife",
 	maniacBonusWeapons = {},
 	maniacDisallowedWeapons = { "weapon_357" },
 	bystanderGun = "weapon_357",
 	bystanderBonusWeapons = { ["weapon_357"] = 0.1 },
-	bystanderDisallowedWeapons = { "weapon_crowbar" },
+	bystanderDisallowedWeapons = { "cc_weapon_knife" },
 
 	-- movement settings
 	plyDuckSpeed = 0.35,
